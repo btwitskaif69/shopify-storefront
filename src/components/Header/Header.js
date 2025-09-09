@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
-import { Link } from "react-router-dom";
+// src/components/Header/Header.jsx
+import React, { useEffect, useMemo, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
+import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import "./Header.css";
@@ -9,51 +10,99 @@ import {
   FaShoppingCart,
   FaUser,
   FaTruck,
-  FaBars, // Hamburger Icon
-  FaTimes, // Close Icon
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 
-const GET_COLLECTIONS = gql`
-  query GetCollections {
-    collections(first: 20) {
-      edges {
-        node {
-          id
+/**
+ * Storefront API: fetch a navigation menu by handle.
+ * Your Shopify Admin → Navigation → "Main menu" has handle: "main-menu"
+ */
+const GET_MENU = gql`
+  query getMenu($handle: String!) {
+    menu(handle: $handle) {
+      id
+      items {
+        title
+        url
+        items {
           title
-          handle
+          url
+          items {
+            title
+            url
+          }
         }
       }
     }
   }
 `;
 
-const Header = () => {
-  const { loading, error, data } = useQuery(GET_COLLECTIONS);
+/** Convert Shopify navigation URLs to SPA-relative paths */
+function toRelative(url) {
+  if (!url) return "#";
+  // Already relative?
+  if (url.startsWith("/")) return url;
+
+  try {
+    const u = new URL(url);
+    // Common Shopify resource types we expect in nav
+    // /collections/... , /products/... , /pages/... , /blogs/... , /policies/...
+    if (
+      u.pathname.startsWith("/collections") ||
+      u.pathname.startsWith("/products") ||
+      u.pathname.startsWith("/pages") ||
+      u.pathname.startsWith("/blogs") ||
+      u.pathname.startsWith("/policies")
+    ) {
+      return u.pathname + u.search + u.hash;
+    }
+    // Fallback: external link
+    return url;
+  } catch {
+    return url;
+  }
+}
+
+export default function Header() {
+  const location = useLocation();
+
+  // --- Fetch Shopify Main Menu ---
+  const { loading, error, data } = useQuery(GET_MENU, {
+    variables: { handle: "main-menu" },
+  });
+
+  const menuItems = useMemo(() => data?.menu?.items ?? [], [data]);
+
+  // --- App contexts ---
   const { cart } = useCart();
   const { customer, logout } = useAuth();
 
-  // State for desktop dropdown
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
-  // --- NEW: State for mobile sidebar ---
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isProductsOpen, setIsProductsOpen] = useState(false); // For sidebar accordion
-
   const cartItemCount = cart
-    ? cart.lines.edges.reduce((total, edge) => total + edge.node.quantity, 0)
+    ? cart.lines.edges.reduce((n, e) => n + e.node.quantity, 0)
     : 0;
 
-  const excludedHandles = ["home-page"];
-  const navCollections =
-    data?.collections.edges.filter(
-      (edge) => !excludedHandles.includes(edge.node.handle)
-    ) || [];
+  // --- Desktop dropdown state ---
+  const [openDropdown, setOpenDropdown] = useState(null); // index of open parent or null
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  // --- NEW: Handlers for sidebar ---
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  // --- Mobile sidebar state ---
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [openMobileGroups, setOpenMobileGroups] = useState({}); // {index: bool}
+
+  // Close menus on route change
+  useEffect(() => {
+    setOpenDropdown(null);
+    setIsUserMenuOpen(false);
+    setIsSidebarOpen(false);
+    setOpenMobileGroups({});
+  }, [location.pathname]);
+
+  const toggleSidebar = () => setIsSidebarOpen((s) => !s);
   const closeSidebar = () => setIsSidebarOpen(false);
-  const toggleProducts = () => setIsProductsOpen(!isProductsOpen);
+
+  const toggleMobileGroup = (idx) =>
+    setOpenMobileGroups((m) => ({ ...m, [idx]: !m[idx] }));
 
   return (
     <>
@@ -61,11 +110,18 @@ const Header = () => {
         {/* Top Bar */}
         <div className="top-bar">
           <div className="top-bar-left">
-            {/* --- NEW: Hamburger Menu Icon --- */}
-            <button className="hamburger-menu" onClick={toggleSidebar}>
+            <button
+              className="hamburger-menu"
+              onClick={toggleSidebar}
+              aria-label="Open menu"
+            >
               <FaBars />
             </button>
-            <Link to="/tools/track-order" className="header-link track-order-link">
+
+            <Link
+              to="/tools/track-order"
+              className="header-link track-order-link"
+            >
               <FaTruck /> <span>Track Order</span>
             </Link>
           </div>
@@ -102,17 +158,19 @@ const Header = () => {
                 <button
                   className="header-link user-button"
                   onMouseEnter={() => setIsUserMenuOpen(true)}
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} // For mobile click
+                  onClick={() => setIsUserMenuOpen((v) => !v)}
+                  aria-expanded={isUserMenuOpen}
+                  aria-haspopup="menu"
                 >
                   <FaUser />
                   <span className="user-name">{customer.firstName}</span>
                 </button>
                 {isUserMenuOpen && (
-                  <div className="user-dropdown">
-                    <Link to="/account" className="user-menu-link">
+                  <div className="user-dropdown" role="menu">
+                    <Link to="/account" className="user-menu-link" role="menuitem">
                       My Account
                     </Link>
-                    <button onClick={logout} className="logout-button">
+                    <button onClick={logout} className="logout-button" role="menuitem">
                       Log Out
                     </button>
                   </div>
@@ -132,97 +190,176 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Main Nav (for desktop) */}
-        <nav className="main-nav">
+        {/* Main Nav (Desktop) */}
+        <nav className="main-nav" aria-label="Primary">
           <ul>
-            <li><Link to="/">HOME</Link></li>
-            <li
-              className="dropdown"
-              onMouseEnter={() => setOpenDropdown("products")}
-              onMouseLeave={() => setOpenDropdown(null)}
-            >
-              <Link to="/collections">
-                OUR PRODUCTS <span className="arrow">▼</span>
-              </Link>
-              <ul
-                className={`dropdown-menu ${
-                  openDropdown === "products" ? "is-open" : ""
-                }`}
-              >
-                {loading && <li>Loading...</li>}
-                {error && <li>Error: {error.message}</li>}
-                {navCollections.map(({ node: collection }) => (
-                  <li key={collection.id}>
-                    <Link to={`/collections/${collection.handle}`}>
-                      {collection.title}
-                    </Link>
+            {loading && <li>Loading…</li>}
+            {error && <li>Error loading menu</li>}
+
+            {!loading &&
+              !error &&
+              menuItems.map((item, idx) => {
+                const hasChildren = (item.items?.length ?? 0) > 0;
+                const isOpen = openDropdown === idx;
+
+                const TopLink = (
+                  <Link to={toRelative(item.url)}>{item.title}</Link>
+                );
+
+                return (
+                  <li
+                    key={`${item.title}-${idx}`}
+                    className={`dropdown ${hasChildren ? "has-children" : ""}`}
+                    onMouseEnter={() => hasChildren && setOpenDropdown(idx)}
+                    onMouseLeave={() => hasChildren && setOpenDropdown(null)}
+                  >
+                    {hasChildren ? (
+                      <button
+                        className="dropdown-trigger"
+                        aria-expanded={isOpen}
+                        aria-haspopup="true"
+                        onClick={() =>
+                          setOpenDropdown((v) => (v === idx ? null : idx))
+                        }
+                      >
+                        {item.title} <span className="arrow">▾</span>
+                      </button>
+                    ) : (
+                      TopLink
+                    )}
+
+                    {hasChildren && (
+                      <ul className={`dropdown-menu ${isOpen ? "is-open" : ""}`}>
+                        {item.items.map((sub, sIdx) => (
+                          <li key={`${sub.title}-${sIdx}`}>
+                            <Link to={toRelative(sub.url)}>{sub.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
-                ))}
-              </ul>
-            </li>
-            <li><Link to="/collections/offers">OUR OFFERS</Link></li>
-            <li><Link to="/pages/contact-us">CONTACT US</Link></li>
+                );
+              })}
+
+            {/* You can add extra static items if needed:
+                <li><Link to="/contact">Contact</Link></li>
+            */}
           </ul>
         </nav>
       </header>
 
-      {/* --- NEW: Sidebar for Mobile --- */}
+      {/* Sidebar (Mobile) */}
       <div
         className={`sidebar-overlay ${isSidebarOpen ? "open" : ""}`}
         onClick={closeSidebar}
-      ></div>
+      />
       <aside className={`sidebar-container ${isSidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <h3>Menu</h3>
-          <button className="close-sidebar-btn" onClick={closeSidebar}>
+          <button
+            className="close-sidebar-btn"
+            onClick={closeSidebar}
+            aria-label="Close menu"
+          >
             <FaTimes />
           </button>
         </div>
-        <nav className="sidebar-nav">
+
+        <nav className="sidebar-nav" aria-label="Mobile">
           <ul>
-            <li><Link to="/" onClick={closeSidebar}>Home</Link></li>
-            <li className="sidebar-dropdown">
-              <div className="sidebar-dropdown-toggle" onClick={toggleProducts}>
-                Our Products
-                <span className={`arrow ${isProductsOpen ? "up" : "down"}`}>▼</span>
-              </div>
-              {isProductsOpen && (
-                <ul className="sidebar-dropdown-menu">
-                  {loading && <li>Loading...</li>}
-                  {error && <li>Error loading collections.</li>}
-                  {navCollections.map(({ node: collection }) => (
-                    <li key={collection.id}>
-                      <Link
-                        to={`/collections/${collection.handle}`}
-                        onClick={closeSidebar}
-                      >
-                        {collection.title}
+            {loading && <li>Loading…</li>}
+            {error && <li>Error loading menu</li>}
+
+            {!loading &&
+              !error &&
+              menuItems.map((item, idx) => {
+                const hasChildren = (item.items?.length ?? 0) > 0;
+                const open = !!openMobileGroups[idx];
+
+                if (!hasChildren) {
+                  return (
+                    <li key={`${item.title}-${idx}`}>
+                      <Link to={toRelative(item.url)} onClick={closeSidebar}>
+                        {item.title}
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              )}
+                  );
+                }
+
+                return (
+                  <li key={`${item.title}-${idx}`} className="sidebar-dropdown">
+                    <div
+                      className="sidebar-dropdown-toggle"
+                      onClick={() => toggleMobileGroup(idx)}
+                    >
+                      {item.title}
+                      <span className={`arrow ${open ? "up" : "down"}`}>▾</span>
+                    </div>
+
+                    {open && (
+                      <ul className="sidebar-dropdown-menu">
+                        {item.items.map((sub, sIdx) => (
+                          <li key={`${sub.title}-${sIdx}`}>
+                            <Link
+                              to={toRelative(sub.url)}
+                              onClick={closeSidebar}
+                            >
+                              {sub.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+
+            <li className="sidebar-divider">
+              <hr />
             </li>
-            <li><Link to="/collections/offers" onClick={closeSidebar}>Our Offers</Link></li>
-            <li><Link to="/pages/contact-us" onClick={closeSidebar}>Contact Us</Link></li>
-            <li className="sidebar-divider"><hr /></li>
-            <li><Link to="/tools/track-order" onClick={closeSidebar}><FaTruck /> Track Order</Link></li>
+
+            <li>
+              <Link to="/tools/track-order" onClick={closeSidebar}>
+                <FaTruck /> Track Order
+              </Link>
+            </li>
+
             {customer ? (
-                <>
-                    <li><Link to="/account" onClick={closeSidebar}><FaUser /> My Account</Link></li>
-                    <li><button onClick={() => { logout(); closeSidebar(); }} className="sidebar-logout-button">Log Out</button></li>
-                </>
+              <>
+                <li>
+                  <Link to="/account" onClick={closeSidebar}>
+                    <FaUser /> My Account
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      logout();
+                      closeSidebar();
+                    }}
+                    className="sidebar-logout-button"
+                  >
+                    Log Out
+                  </button>
+                </li>
+              </>
             ) : (
-                <>
-                    <li><Link to="/account/login" onClick={closeSidebar}>Login</Link></li>
-                    <li><Link to="/account/register" onClick={closeSidebar}>Sign Up</Link></li>
-                </>
+              <>
+                <li>
+                  <Link to="/account/login" onClick={closeSidebar}>
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/account/register" onClick={closeSidebar}>
+                    Sign Up
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </nav>
       </aside>
     </>
   );
-};
-
-export default Header;
+}
