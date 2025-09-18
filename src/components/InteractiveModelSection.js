@@ -3,15 +3,25 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Model } from './Model';
+import { useWindowSize } from './hooks/useWindowSize'; // ✅ Import the new hook
 import './InteractiveModelSection.css';
 
-// USPs to display at different scroll stages
-const usps = [
-  { text: 'Crafted from 100% natural fabrics', position: { top: '20%', left: '25%' } },
-  { text: 'Uncompromised quality at fair prices', position: { top: '40%', left: '70%' } },
-  { text: 'Sustainable fashion for conscious living', position: { top: '60%', left: '15%' } },
-  { text: 'Elegant designs, timeless everyday wear', position: { top: '75%', left: '70%' } },
-  { text: 'Comfort, style, and responsibility combined', position: { top: '90%', left: '30%' } },
+// ✅ USP positions for desktop
+const uspsDesktop = [
+  { text: 'Like every piece is designed just for you.', position: { top: '20%', left: '25%' } },
+  { text: 'Comfort that hugs, style that truly stays.', position: { top: '20%', left: '70%' } },
+  { text: 'A wardrobe choice you’ll never regret making.', position: { top: '60%', left: '25%' } },
+  { text: 'Outfits that vibe with every mood and moment.', position: { top: '60%', left: '70%' } },
+  { text: 'Quality that speaks before you even say a word.', position: { top: '80%', left: '50%' } },
+];
+
+// ✅ USP positions for mobile/tablet (vertically stacked)
+const uspsMobile = [
+  { text: 'Like every piece is designed just for you.', position: { top: '20%', left: '50%' } },
+  { text: 'Comfort that hugs, style that truly stays.', position: { top: '35%', left: '50%' } },
+  { text: 'A wardrobe choice you’ll never regret making.', position: { top: '50%', left: '50%' } },
+  { text: 'Outfits that vibe with every mood and moment.', position: { top: '65%', left: '50%' } },
+  { text: 'Quality that speaks before you even say a word.', position: { top: '80%', left: '50%' } },
 ];
 
 const UspItem = ({ usp, index, scrollYProgress }) => {
@@ -31,12 +41,18 @@ const UspItem = ({ usp, index, scrollYProgress }) => {
 
 const InteractiveModelSection = ({ nextSectionRef }) => {
   const sectionRef = useRef(null);
+  const { width } = useWindowSize(); // ✅ Get window width
+  const isMobile = width < 768; // ✅ Define our breakpoint
+
+  // ✅ Choose the correct USP layout and camera position based on screen width
+  const usps = isMobile ? uspsMobile : uspsDesktop;
+  const cameraPosition = isMobile ? [0, 0, 8] : [0, 0, 6.5]; // Zoom out slightly on mobile
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
   });
 
-  // Rotate 360° across the scroll
   const modelRotation = useTransform(scrollYProgress, [0, 1], [0, 2 * Math.PI]);
 
   useEffect(() => {
@@ -50,14 +66,20 @@ const InteractiveModelSection = ({ nextSectionRef }) => {
   return (
     <section ref={sectionRef} className="interactive-section">
       <div className="sticky-container">
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+        
+        <div className="interactive-heading">
+          <h2>Why Delan Feels Like You:</h2>
+          <p>Because fashion should vibe with your story.</p>
+        </div>
+
+        <Canvas camera={{ position: cameraPosition, fov: 50 }}> {/* ✅ Use dynamic camera position */}
           <ambientLight intensity={1.5} />
           <directionalLight position={[10, 10, 5]} intensity={2} />
           <Model modelRotation={modelRotation} />
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
 
-        {usps.map((usp, index) => (
+        {usps.map((usp, index) => ( // ✅ Map over the dynamically chosen `usps` array
           <UspItem
             key={index}
             usp={usp}

@@ -1,6 +1,8 @@
+/* src/components/StatsCounter.css */
+
 .stats-section {
-  background-color: #f9fafb; /* A light grey background */
-  padding: 4rem 1rem;
+  background-color: #fdf5f5;
+  padding: 5rem 1rem;
   text-align: center;
 }
 
@@ -8,38 +10,71 @@
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
+  justify-content: space-around;
+  align-items: center;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .stat-item {
-  flex: 1 1 250px; /* Allows items to grow and shrink, with a base size */
-  padding: 1rem;
+  flex: 1;
+  min-width: 280px;
+  padding: 1rem 2rem;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+}
+
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+  background-color: rgba(100, 44, 68, 0.2);
 }
 
 .stat-number {
-  color: #642c44; /* Your specified color */
-  font-size: 3.75rem; /* 60px */
-  font-weight: bold;
-  letter-spacing: -0.025em;
+  color: #642c44;
+  font-family: 'Poppins', sans-serif;
+  /* ✅ INCREASED SIZE */
+  font-size: 4.5rem; /* 72px */
+  font-weight: 700;
   margin: 0;
 }
 
 .stat-label {
-  color: #6b7280; /* A medium grey for the text */
-  margin-top: 0.5rem;
-  font-size: 1.125rem; /* 18px */
+  color: #888;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Responsive styling for smaller screens */
+/* --- Responsive Styling --- */
 @media (max-width: 768px) {
   .stats-container {
     flex-direction: column;
-    align-items: center;
+    gap: 2rem;
+  }
+
+  .stat-item:not(:last-child)::after {
+    display: none;
+  }
+  
+  .stat-item:not(:last-child) {
+      border-bottom: 1px solid rgba(100, 44, 68, 0.1);
+      padding-bottom: 2rem;
   }
 
   .stat-number {
-    font-size: 3rem; /* 48px */
+    /* ✅ INCREASED SIZE FOR MOBILE */
+    font-size: 3.5rem; /* 56px */
   }
 }

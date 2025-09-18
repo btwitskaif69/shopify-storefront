@@ -1,0 +1,124 @@
+.container {
+  width: 100%;
+  padding: 80px 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-primary);
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Main */
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 120px;
+}
+
+/* Category List (Left) */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 42px;
+  font-weight: bold;
+}
+
+.category-item {
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-item:hover {
+  color: #555;
+}
+
+.category-item.active {
+  color: #a64d79;
+  transform: scale(1.1);
+}
+
+/* Center Image and Blurred Images */
+.preview {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.main-img {
+  width: 400px;
+  height: auto;
+  object-fit: cover;
+  z-index: 2;
+}
+
+.blurred-images {
+  position: absolute;
+  left: 50%;
+  transform: translateX(200px);
+  display: flex;
+  gap: 10px;
+  z-index: 1;
+}
+
+.blurred-img {
+  width: 200px;
+  height: auto;
+  object-fit: cover;
+  filter: blur(5px);
+  opacity: 0.6;
+  transition: all 0.5s ease;
+}
+
+.deeper-blur {
+  filter: blur(8px);
+  opacity: 0.4;
+}
+
+/* Right Empty Space */
+.right-space {
+  width: 300px; /* Provides balance on desktop */
+}
+
+/* --- Mobile Responsive Styles --- */
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+    padding: 40px 20px;
+    /* CHANGED: Reduced vertical gap on mobile from 50px */
+    gap: 30px;
+  }
+
+  .category-list {
+    font-size: 28px; /* Reduce font size to fit */
+    gap: 20px;
+    text-align: center;
+  }
+
+  .category-item.active {
+    transform: scale(1.05); /* Tone down the active effect */
+  }
+
+  .main-img {
+    width: 90%; /* Make the image responsive */
+    max-width: 300px;
+  }
+
+  .blurred-images,
+  .right-space {
+    /* Hide decorative elements on mobile for a cleaner look */
+    display: none;
+  }
+}
+
+/* Add this to your Categories.css file */
+.category-link {
+  text-decoration: none; /* Removes the underline from links */
+  color: inherit; /* Makes the link inherit the color from its parent */
+}

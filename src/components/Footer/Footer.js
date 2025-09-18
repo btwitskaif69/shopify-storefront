@@ -46,7 +46,7 @@ const Footer = () => {
             <h4>Follow Us</h4>
             <div className="social-icons">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/delan.in/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -54,21 +54,14 @@ const Footer = () => {
                 <FaInstagram />
               </a>
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/delanonlinestore"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
               >
                 <FaFacebook />
               </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-              >
-                <FaTwitter />
-              </a>
+              
             </div>
           </div>
         </div>
@@ -76,10 +69,11 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Dellan. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Delan. All Rights Reserved.</p>
       </div>
     </footer>
   );
 };
+
 
 export default Footer;

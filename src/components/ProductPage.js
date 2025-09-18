@@ -9,8 +9,11 @@ import RelatedProducts from './RelatedProducts';
 import RecentlyViewed from './RecentlyViewed';
 import ShineSection from './ShineSection';
 import ReviewList from './ReviewList';
+import ProductUSP from './ProductUSP';
 import './ProductPage.css';
-import { FaHeart } from 'react-icons/fa';
+import InstagramCircles from './InstagramCircles';
+import TopProductsMarquee from './TopProductsMarquee';
+import { FaHeart, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const GET_PRODUCT_BY_HANDLE = gql`
   query getProductByHandle($handle: String!) {
@@ -60,15 +63,14 @@ const GET_PRODUCT_BY_HANDLE = gql`
   }
 `;
 
-
-
 const ProductPage = () => {
   const { handle } = useParams();
   const [selectedOptions, setSelectedOptions] = useState({});
   const [quantity, setQuantity] = useState(1);
-  const [mainImage, setMainImage] = useState(null); 
+  const [mainImage, setMainImage] = useState(null);
   const { addToCart } = useCart();
-  const [showPopup, setShowPopup] = useState(false); 
+  const [showPopup, setShowPopup] = useState(false);
+  const [openSections, setOpenSections] = useState({}); // dropdown control
 
   useEffect(() => {
     if (handle) {
@@ -83,35 +85,34 @@ const ProductPage = () => {
     variables: { handle },
   });
 
-useEffect(() => {
-  if (data && data.product) {
-    const defaultOptions = {};
-    data.product.options.forEach(option => {
-      defaultOptions[option.name] = option.values[0];
-    });
-    setSelectedOptions(defaultOptions);
-    setMainImage(data.product.images.edges[0]?.node);
-  }
-}, [data]);
-
+  useEffect(() => {
+    if (data && data.product) {
+      const defaultOptions = {};
+      data.product.options.forEach(option => {
+        defaultOptions[option.name] = option.values[0];
+      });
+      setSelectedOptions(defaultOptions);
+      setMainImage(data.product.images.edges[0]?.node);
+    }
+  }, [data]);
 
   if (loading) return <p style={{ textAlign: 'center', padding: '100px 0' }}>Loading product...</p>;
   if (error) return <p style={{ textAlign: 'center', padding: '100px 0' }}>Error: {error.message}</p>;
   if (!data || !data.product) return <p style={{ textAlign: 'center', padding: '100px 0' }}>Product not found.</p>;
 
   const product = data.product;
-  
+
   const selectedVariant = data.product.variants.edges.find(edge => {
     return edge.node.selectedOptions.every(option => {
       return selectedOptions[option.name] === option.value;
     });
   })?.node;
-  
+
   const handleOptionClick = (optionName, value) => {
     const newSelectedOptions = { ...selectedOptions, [optionName]: value };
     setSelectedOptions(newSelectedOptions);
 
-    const newVariant = data.product.variants.edges.find(edge => 
+    const newVariant = data.product.variants.edges.find(edge =>
       edge.node.selectedOptions.every(opt => newSelectedOptions[opt.name] === opt.value)
     )?.node;
 
@@ -134,24 +135,17 @@ useEffect(() => {
 
   // --- Reviews parsing from metafield ---
   let reviews = [];
-
-  // Check if the metafields array exists and is not empty
   if (product.metafields && product.metafields.length > 0) {
-    
-    // Find the specific metafield that contains the review data
     const reviewMetafield = product.metafields.find(
       mf => mf && mf.namespace === 'air_reviews_product' && mf.key === 'data'
     );
-
-    // If the metafield is found and has a value, parse it
     if (reviewMetafield && reviewMetafield.value) {
       try {
         const parsedData = JSON.parse(reviewMetafield.value);
-        // The actual reviews are likely nested inside the parsed JSON
         reviews = parsedData.reviews || [];
       } catch (e) {
         console.error("Error parsing reviews from metafield:", e);
-        reviews = []; // Reset to empty array on error
+        reviews = [];
       }
     }
   }
@@ -162,20 +156,27 @@ useEffect(() => {
     ? (approvedReviews.reduce((sum, r) => sum + (r.rate || 0), 0) / approvedReviews.length).toFixed(1)
     : null;
 
+  const toggleSection = (key) => {
+    setOpenSections(prev => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <>
+     <div className="marquee-wrapper">
+      <TopProductsMarquee />
+    </div>
       <div className="product-page-layout">
+        {/* LEFT COLUMN: IMAGES & WHY YOU'LL LOVE THIS */}
         <div className="product-image-gallery">
           {/* Thumbnails */}
           <div className="thumbnail-list">
             {product.images.edges.map(({ node: image }, index) => (
-              <button 
-                key={index} 
+              <button
+                key={index}
                 className={`thumbnail-item ${mainImage?.url === image.url ? 'active' : ''}`}
                 onClick={() => setMainImage(image)}
               >
-                <img 
+                <img
                   src={image.url}
                   alt={image.altText || product.title}
                 />
@@ -183,25 +184,37 @@ useEffect(() => {
             ))}
           </div>
 
-          {/* Main image with zoom */}
-          <div className="main-image-viewer">
-            {mainImage && (
-              <InnerImageZoom
+          <div className="image-and-love-wrapper">
+            {/* Main image with zoom */}
+            <div className="main-image-viewer">
+              {mainImage && (
+                <InnerImageZoom
                   src={mainImage.url}
                   zoomSrc={mainImage.url}
                   alt={mainImage.altText || product.title}
                   zoomType="hover"
                   zoomPreload={true}
                   fullscreenOnMobile={true}
-                />   
-            )}
+                />
+              )}
+            </div>
+
+            {/* Why You’ll Love This Section */}
+            <div className="why-love-section">
+              <h2>Why You’ll Love This</h2>
+              <div
+                className="why-love-content"
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Product details */}
+        {/* RIGHT COLUMN: PRODUCT DETAILS */}
         <div className="product-details-column">
           <h1 className="product-title-main">{product.title}</h1>
           <p className="product-subtitle">Designed for Timeless Elegance</p>
+
           <div className="price-and-reviews">
             <p className="product-price-main">
               Rs. {selectedVariant?.price.amount || product.variants.edges[0].node.price.amount}
@@ -241,36 +254,51 @@ useEffect(() => {
               <input type="number" value={quantity} readOnly />
               <button onClick={() => setQuantity(q => q + 1)}>+</button>
             </div>
-            <button onClick={handleAddToCart} className="add-to-cart-button-new" disabled={!selectedVariant || !selectedVariant.availableForSale}>
+            <button
+              onClick={handleAddToCart}
+              className="add-to-cart-button-new"
+              disabled={!selectedVariant || !selectedVariant.availableForSale}
+            >
               {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}
             </button>
             <button className="wishlist-button"><FaHeart /></button>
           </div>
-          
+
           <div className="offer-banner">
             <p>Flat 10% off on first purchase, up to Rs.500</p>
           </div>
-          {/* Circular Media Section */}
-          <div className="circle-thumbnails-below-offer">
-            {product.images.edges.map(({ node }, index) => (
-              <button
-                key={index}
-                className="circle-thumb"
-                onClick={() => setMainImage(node)}
-              >
-                <img src={node.url} alt={node.altText || product.title} />
-              </button>
+          
+          <InstagramCircles />
+         
+
+          {/* Dropdown Sections */}
+          <div className="product-dropdowns">
+            {[
+              { key: "highlights", title: "Highlights", content: "<ul><li>Built in cups that stay in place</li><li>No see-through</li><li>Anti-camel toe</li><li>Chlorine resistant</li></ul>" },
+              { key: "fabric", title: "Fabric Details", content: "<ul><li>80% Nylon – Comfort & freedom in/out of water</li><li>20% Spandex – Durability and stretch</li></ul>" },
+              { key: "wash", title: "Wash-Care Details", content: "<ul><li>Line dry in shade</li></ul>" }
+            ].map(section => (
+              <div key={section.key} className="dropdown-section">
+                <button className="dropdown-header" onClick={() => toggleSection(section.key)}>
+                  <span>{section.title}</span>
+                  {openSections[section.key] ? <FaChevronUp /> : <FaChevronDown />}
+                </button>
+                {openSections[section.key] && (
+                  <div
+                    className="dropdown-content"
+                    dangerouslySetInnerHTML={{ __html: section.content }}
+                  />
+                )}
+              </div>
             ))}
           </div>
 
-          <div className="product-description-new" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
-
-          <AddReviewForm 
-            productId={product.id} 
-            productHandle={product.handle} 
-            productTitle={product.title} 
-            productImage={mainImage?.url} 
-            productSku={selectedVariant?.sku} 
+          <AddReviewForm
+            productId={product.id}
+            productHandle={product.handle}
+            productTitle={product.title}
+            productImage={mainImage?.url}
+            productSku={selectedVariant?.sku}
           />
         </div>
       </div>
@@ -281,11 +309,9 @@ useEffect(() => {
 
       <RelatedProducts productId={product.id} />
       <RecentlyViewed currentProductHandle={product.handle} />
-      
-      <ShineSection text="#FOR THE MOMENTS THAT MATTER" />
-
-      {/* Customer Reviews Section */}
+      <ProductUSP />
       <ReviewList reviews={approvedReviews} />
+      <ShineSection text="Own It #TrustYourStyle" />
     </>
   );
 };

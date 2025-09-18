@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './StatsCounter.css'; // We'll create this CSS file next
+import './StatsCounter.css';
 
 const StatsCounter = () => {
-  // You can change these target numbers
+  // ✅ CHANGED: Updated the stats to match your image
   const stats = [
-    { id: 1, label: 'Orders Delivered', target: 3456, suffix: '+' },
-    { id: 2, label: 'Happy Clients', target: 1289, suffix: '+' },
-    { id: 3, label: 'Curated Products', target: 68, suffix: '+' }
+    { id: 1, label: 'Happy Customers', target: 10, suffix: 'L+' },
+    { id: 2, label: 'Styles Purchased', target: 3, suffix: 'M+' },
+    { id: 3, label: 'Offline Stores Near You', target: 15, suffix: '' }
   ];
 
   // Custom hook for the count-up animation

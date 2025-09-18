@@ -1,13 +1,37 @@
+/* Heading above model */
+.interactive-heading {
+  position: absolute;
+  top: 5%;   /* Distance from top */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  color: #642c44; /* Deep mauve */
+  font-family: var(--font-primary);
+  width: 90%; /* Ensure it doesn't overflow on small screens */
+}
+
+.interactive-heading h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.interactive-heading p {
+  font-size: 1.5rem;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
 /* src/components/InteractiveModelSection.css */
 .interactive-section {
   height: 400vh;
   position: relative;
-  /* --- Style Updates Below --- */
-  background-image: url('/public/images/bg.jpg'); /* The new background image */
-  background-size: cover; /* Ensures the image covers the entire section */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  background-attachment: fixed; /* Optional: Creates a parallax effect on scroll */
+  /* background-image: url('/public/images/bg.jpg'); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .sticky-container {
@@ -30,4 +54,45 @@
   pointer-events: none;
   backdrop-filter: blur(5px);
   font-family: var(--font-secondary);
+  text-align: center; /* Better for centered mobile layout */
+  width: 80%; /* ✅ Constrain width on mobile */
+  max-width: 300px; /* ✅ Set a max-width */
+}
+
+/* --- ✅ Responsive Styles Below --- */
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+  .interactive-heading {
+    top: 8%; /* Give a bit more space from the top */
+  }
+
+  .interactive-heading h2 {
+    font-size: 1.6rem; /* Reduce heading size */
+  }
+
+  .interactive-heading p {
+    font-size: 1.1rem; /* Reduce subheading size */
+  }
+
+  .usp-text {
+    font-size: 1rem; /* Reduce USP text size */
+    padding: 8px 15px;
+  }
+}
+
+/* For small mobile phones */
+@media (max-width: 480px) {
+  .interactive-heading h2 {
+    font-size: 1.3rem;
+  }
+
+  .interactive-heading p {
+    font-size: 0.9rem;
+  }
+
+  .usp-text {
+    font-size: 0.85rem;
+    width: 75%;
+  }
 }

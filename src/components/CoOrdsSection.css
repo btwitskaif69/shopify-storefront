@@ -1,0 +1,277 @@
+/* --- Section Wrapper --- */
+.co-ords-section {
+  background-color: #f7e9e9;
+  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Top Layout (GRID keeps center perfectly centered) --- */
+.co-ords-top-layout {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;     /* left | center | right */
+  align-items: center;
+  justify-items: center;                   /* ensure children center on their cells */
+  width: min(90%, 1400px);
+  margin-bottom: 50px;
+  gap: 24px;
+}
+
+/* lock placements in grid (desktop) */
+.left-text   { grid-column: 1; justify-self: start; }
+.co-ords-carousel-center { grid-column: 2; justify-self: center; }
+.right-text  { grid-column: 3; justify-self: end; }
+
+/* --- Text Blocks (desktop default) --- */
+.co-ords-text-block {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(28px, 4.5vw, 56px);
+  font-weight: 700;
+  color: #642c44;
+  line-height: 1.1;
+  user-select: none;
+  text-align: left;
+}
+.right-text { text-align: right; }
+
+.text-line { display: block; margin-bottom: 12px; }
+
+/* desktop offsets to create that stepped feeling */
+.left-text .line-2 { margin-left: 63px; }
+.left-text .line-3 { margin-left: 142px; }
+.right-text .line-1 { margin-right: -50px; }
+.right-text .line-2 { margin-right: 23px; }
+.right-text .line-3 { margin-right: 41px; }
+
+/* --- Center Carousel --- */
+.co-ords-carousel-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;                      /* shrink-to-fit for perfect centering */
+}
+
+.co-ords-carousel-container {
+  display: inline-flex;                    /* intrinsic width – centers precisely */
+  align-items: center;
+  justify-content: center;
+  gap: 14px;                               /* space between arrows and card */
+  position: relative;
+  margin: 0 auto;
+}
+
+.co-ords-products-wrapper {
+  overflow: hidden;
+  width: 280px;
+  height: 380px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.co-ords-products-carousel {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s ease-in-out;
+  will-change: transform;
+}
+
+.co-ords-product-card {
+  min-width: 280px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.co-ords-product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Navigation Arrows --- */
+.co-ords-nav-arrow {
+  background: none;
+  border: 1px solid #642c44;
+  color: #642c44;
+  font-size: 1.6rem;
+  padding: 10px 12px;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  line-height: 1;
+}
+
+.co-ords-nav-arrow:hover {
+  background-color: #642c44;
+  color: #fff;
+  transform: scale(1.06);
+}
+
+/* --- Description Area (CTA synced to slide) --- */
+.co-ords-description-area {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  text-align: center;
+  max-width: 900px;
+}
+
+.co-ords-category-title {
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  color: #642c44;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.3px;
+  opacity: 0.9;
+}
+
+.co-ords-subtitle {
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+  color: #642c44;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.co-ords-tagline {
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  color: #a64d79;
+  max-width: 640px;
+  line-height: 1.5;
+  margin: 0 0 18px 0;
+}
+
+.co-ords-shop-button {
+  background-color: #642c44;
+  color: #fff;
+  border: none;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(100, 44, 68, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.co-ords-shop-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(100, 44, 68, 0.4);
+}
+
+/* --- Tablet tweaks --- */
+@media (max-width: 1024px) {
+  .co-ords-products-wrapper { width: 260px; height: 350px; }
+  .co-ords-product-card { min-width: 260px; }
+
+  /* reduce decorative offsets */
+  .left-text .line-2 { margin-left: 40px; }
+  .left-text .line-3 { margin-left: 80px; }
+  .right-text .line-1 { margin-right: -30px; }
+  .right-text .line-2 { margin-right: 14px; }
+  .right-text .line-3 { margin-right: 24px; }
+
+  /* put the big headings on ONE line on tablet */
+  .co-ords-text-block {
+    flex-direction: row;
+    gap: 10px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .text-line { margin: 0; display: inline-block; }
+  .left-text, .right-text { justify-self: center; }
+  .left-text .line-2,
+  .left-text .line-3,
+  .right-text .line-1,
+  .right-text .line-2,
+  .right-text .line-3 { margin-left: 0; margin-right: 0; }
+}
+
+/* --- Phones & small tablets --- */
+@media (max-width: 768px) {
+  /* stack layout; keep everything centered */
+  .co-ords-top-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 18px;
+  }
+
+  .left-text,
+  .right-text,
+  .co-ords-carousel-center {
+    grid-column: 1;
+    justify-self: center;
+    text-align: center;
+  }
+
+  /* ONE-LINE headings on phones too */
+  .co-ords-text-block {
+    flex-direction: row;
+    gap: 10px;
+    white-space: nowrap;
+    font-size: clamp(28px, 7vw, 44px);
+    align-items: center;
+  }
+  .text-line { margin: 0; display: inline-block; }
+
+  .co-ords-products-wrapper { width: 240px; height: 320px; }
+  .co-ords-product-card   { min-width: 240px; }
+
+  .co-ords-nav-arrow {
+    width: 40px; height: 40px; font-size: 1.4rem; margin: 0 10px;
+  }
+
+  .co-ords-description-area { margin-top: 22px; max-width: 92vw; }
+
+  /* Ensure CTA headings stay one line with ellipsis if too long */
+  .co-ords-category-title,
+  .co-ords-subtitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 92vw;
+  }
+  .co-ords-subtitle { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+  .co-ords-category-title { font-size: clamp(0.95rem, 3.8vw, 1.1rem); }
+
+  /* ✅ Mobile centering fix for image + arrows */
+  .co-ords-carousel-center { width: 100%; display: flex; justify-content: center; }
+  .co-ords-carousel-container {
+    width: 100%;
+    max-width: 360px;               /* 240px image + two 40px arrows + gaps */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+  .co-ords-carousel-container > .co-ords-nav-arrow,
+  .co-ords-carousel-container > .co-ords-products-wrapper { flex: 0 0 auto; }
+  .co-ords-nav-arrow { margin: 0; }
+  .co-ords-products-wrapper { margin: 0; }
+}
+
+/* --- Very small phones --- */
+@media (max-width: 360px) {
+  .co-ords-products-wrapper { width: 220px; height: 300px; }
+  .co-ords-product-card    { min-width: 220px; }
+  .co-ords-nav-arrow { width: 36px; height: 36px; font-size: 1.25rem; }
+  .co-ords-subtitle  { font-size: clamp(1rem, 5.2vw, 1.25rem); }
+}

@@ -1,0 +1,30 @@
+/* src/components/Offers.css */
+
+/* Main section container */
+.offers-section {
+  width: 100%;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+/* Marquee container */
+.offers-marquee-container {
+  background-color: #FFF0F5;
+  padding: 16px 0;
+  overflow: hidden;
+}
+
+/* Individual marquee text */
+.offers-marquee-text {
+  margin: 0 3rem;
+  font-size: 1.7em; /* default size */
+  font-weight: 600;
+  color: #642C44;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .offers-marquee-text {
+    font-size: 1.7rem/* slightly bigger on medium+ screens */
+  }
+}

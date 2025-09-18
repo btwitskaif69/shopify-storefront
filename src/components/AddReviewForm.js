@@ -34,7 +34,7 @@ const AddReviewForm = ({ productId, productHandle, productTitle, productImage, p
       rate: rating,
       status: "disapproved",
       content: review,
-      firstName: name,
+      author: name,
       productHandle,
       productTitle,
       productImage,

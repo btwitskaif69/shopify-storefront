@@ -1,0 +1,152 @@
+.account-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: var(--font-secondary);
+}
+
+.account-page h1 {
+  font-family: var(--font-primary);
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.account-page p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.account-message {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.order-history-section h2 {
+  font-size: 1.8rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.order-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.order-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.order-summary strong {
+  color: #555;
+  margin-right: 8px;
+}
+
+.status-fulfilled {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-unfulfilled, .status-open {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.order-details-toggle {
+  background-color: var(--color-deep-mauve);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  justify-self: end;
+}
+
+.order-details-toggle:hover {
+  background-color: #5a213d;
+}
+
+.order-details {
+  padding: 20px;
+  background-color: #fafafa;
+  border-top: 1px solid #e5e5e5;
+}
+
+.order-details h4 {
+  margin-top: 0;
+}
+
+.order-line-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.line-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.line-item:last-child {
+  border-bottom: none;
+}
+
+.line-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.line-item-title {
+  font-weight: 500;
+  margin: 0;
+}
+
+.track-order-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--color-deep-mauve);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .order-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+  .order-details-toggle {
+    grid-column: 1 / -1; /* Span full width */
+    margin-top: 10px;
+  }
+  
+}

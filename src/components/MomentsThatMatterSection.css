@@ -1,0 +1,86 @@
+/* ✅ Main section is the positioning context */
+.moments-section {
+  position: relative;
+  width: 100%;
+  height: 80vh; /* You can adjust this height */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fdf5e6;
+}
+
+/* ✅ Marquee container remains the same */
+.marquee-container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ✅ NEW: This is the scrolling element that contains both text blocks */
+.marquee-content {
+  display: flex; /* Aligns the two text blocks side-by-side */
+  animation: marquee 40s linear infinite; /* Animation is now on this parent */
+}
+
+/* ✅ Marquee text styling - NO animation here anymore */
+.marquee-text {
+  display: flex; /* Use flex to ensure spans are always in a row */
+  flex-shrink: 0; /* Prevents the text from shrinking */
+  font-family: var(--font-primary);
+  font-size: 8vw;
+  font-weight: 900;
+  color: #642c44;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  line-height: 1;
+}
+
+.marquee-text span {
+  padding: 0 40px;
+}
+
+/* ✅ UPDATED: Increase image size and center it */
+.models-image {
+  position: absolute; /* Position relative to the section */
+  z-index: 2; /* Keep it in front */
+  height: 95%; /* Increase the height to make the image much larger */
+  width: auto; /* Width will adjust automatically to maintain aspect ratio */
+  object-fit: contain;
+  pointer-events: none;
+  /* Centering the absolutely positioned image */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ✅ UPDATED KEYFRAMES: Animate to -50% for a seamless loop */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); } /* Animate by the width of ONE text block */
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+/* No changes needed here, the new height property handles sizing well */
+@media (max-width: 768px) {
+  .moments-section {
+    height: 60vh;
+  }
+  .marquee-content {
+    animation-duration: 30s;
+  }
+}
+
+@media (max-width: 480px) {
+  .moments-section {
+    height: 50vh;
+  }
+  .marquee-content {
+    animation-duration: 25s;
+  }
+}

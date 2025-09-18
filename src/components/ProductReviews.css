@@ -1,42 +1,96 @@
 /* src/components/ProductReviews.css */
-
 .product-reviews-section {
-  background-color: #FDF6F7; /* A very light, soft blush */
-  padding: 80px 5%;
+  background-color: #fdf6f7;
+  padding: 15px 5%;
+  overflow-x: hidden;
 }
 
 .section-title {
   text-align: center;
   font-family: var(--font-primary);
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 500;
   color: var(--color-deep-mauve);
-  margin: 0 auto 50px auto;
+  margin: 0 auto 15px auto;
 }
 
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+
+.review-slide {
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+/* Slick arrows custom styling */
+.slick-prev,
+.slick-next {
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: var(--color-deep-mauve);
+  font-size: 28px;
+  opacity: 0.8;
+}
+
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}
+
+/* Slick dots custom styling */
+.slick-dots {
+  position: static;
+  margin-top: 30px;
+}
+
+.slick-dots li button:before {
+  color: var(--color-deep-mauve);
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+}
+
+/* --- Mobile Responsive Styles --- */
+@media (max-width: 768px) {
+  .product-reviews-section {
+    padding: 40px 15px; /* Reduce padding */
+  }
+
+  .section-title {
+    font-size: 2rem; /* Make title smaller */
+    margin-bottom: 30px;
+  }
+
+  .review-slide {
+    padding: 0 5px; /* Reduce padding around the single card */
+  }
+
+  /* Reposition arrows to be inside the carousel on mobile */
+  .slick-prev,
+  .slick-next {
+    top: 50%;
+  }
+
+  .slick-prev {
+    left: 5px; /* Bring inside from the left */
+  }
+
+  .slick-next {
+    right: 5px; /* Bring inside from the right */
+  }
+}
+.carousel-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-/* Responsive adjustments for tablet and mobile */
-@media (max-width: 992px) {
-  .reviews-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .reviews-grid {
-    grid-template-columns: 1fr;
-  }
-  .section-title {
-    font-size: 2rem;
-  }
-  .product-reviews-section {
-    padding: 60px 5%;
-  }
+  position: relative; /* Keeps arrows positioned correctly */
+  overflow: hidden;  /* This is the key to clipping the arrows */
 }

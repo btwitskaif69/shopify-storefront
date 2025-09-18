@@ -1,34 +1,54 @@
 import React, { useRef, useState } from 'react';
 import './Preloader.css';
 
-const Preloader = ({ onLoaded }) => {
-    const videoRef = useRef(null);
-    const [isClicked, setIsClicked] = useState(false);
+const Preloader = ({ onVideoEnd }) => {
+  const videoRef = useRef(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
-    const handleClick = () => {
-        if (videoRef.current) {
-            videoRef.current.play();
-        }
-        setIsClicked(true); // Fix: update state so overlay disappears after click
-    };
+  const handleScreenClick = () => {
+    if (videoRef.current && !hasStarted) {
+      videoRef.current.play()
+        .then(() => {
+          setHasStarted(true);
+          console.log("Preloader video started");
+        })
+        .catch(err => {
+          console.error("Error playing preloader video:", err);
+        });
+    }
+  };
 
-    return (
-        <div className="preloader-container" onClick={handleClick}>
-            <video
-                ref={videoRef}
-                src="/videos/intro.mp4"
-                muted
-                playsInline
-                onEnded={onLoaded}
-                autoPlay={isClicked} // Fix: autoplay after click
-            />
-            {!isClicked && (
-                <div className="overlay-text">
-                    <p>Click to Begin</p>
-                </div>
-            )}
+  const handleSkip = (e) => {
+    e.stopPropagation(); // prevent play on skip click
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+    onVideoEnd(); // end preloader
+  };
+
+  return (
+    <div className="preloader-container" onClick={handleScreenClick}>
+      <video
+        ref={videoRef}
+        src="/videos/intro_viddd.mp4"
+        playsInline
+        muted={false}
+        controls={false}
+        onEnded={onVideoEnd}
+        className="preloader-video"
+      />
+      {!hasStarted && (
+        <div className="preloader-overlay">
+          <p className="preloader-hint">Click to Start</p>
         </div>
-    );
+      )}
+      {hasStarted && (
+        <button className="skip-button" onClick={handleSkip}>
+          Skip Video
+        </button>
+      )}
+    </div>
+  );
 };
 
-export default Preloader
+export default Preloader;

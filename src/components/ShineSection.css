@@ -1,4 +1,7 @@
-/* --- Keyframe animation for the moving background texture --- */
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800;900&display=swap');
+
+/* --- Keyframe animation for moving background texture --- */
 @keyframes move-texture {
   from {
     background-position: 0 0;
@@ -8,38 +11,80 @@
   }
 }
 
-.shine-section {
-  /* Make the section background light so the text stands out */
-  background-color: #f5f5f5; /* light gray (you can pick any light tone) */
-  padding: 100px 5%;
+/* Wrapper for the entire section */
+.shine-section-wrapper {
+  background-color: #f8f8f8; /* Light background */
+  padding: 30px 5% 40px; /* Reduced top padding */
   text-align: center;
   overflow: hidden;
 }
 
+/* --- Stats Counter Section --- */
+.stats-counter-container {
+  margin-bottom: 20px; /* Smaller space below counters */
+  padding: 10px 0; /* Compact padding */
+}
+
+.stats-counter-container .stat-item {
+  display: inline-block;
+  margin: 0 25px; /* Reduced side margin */
+  text-align: center;
+}
+
+.stats-counter-container .stat-number {
+  font-size: 2rem; /* Slightly smaller number text */
+  font-weight: 900;
+  color: #642c44;
+  line-height: 1.2;
+}
+
+.stats-counter-container .stat-label {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 5px;
+  display: block;
+}
+
+/* --- Shine Text Section --- */
+.shine-section {
+  padding: 10px 0; /* Reduced vertical padding */
+}
+
 .shine-text {
-  font-family: var(--font-primary);
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-family: 'Poppins', Arial, sans-serif; /* ✅ Updated to Poppins */
+  font-size: 4rem;
+  font-weight: 900; /* Extra bold */
   text-transform: uppercase;
   margin: 0;
 
-  /* Stronger #642c44 texture */
+  /* Make text taller */
+  transform: scaleY(1.3); /* ✅ Increases height by 30% */
+  display: inline-block; /* Required for transform */
+
+  /* Animated #642c44 texture */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' fill='%23642c44' opacity='0.8'/%3E%3C/svg%3E");
-  animation: move-texture 30s linear infinite;
   background-color: #642c44;
+  background-size: cover;
+  animation: move-texture 30s linear infinite;
+
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
 }
 
-
-
-/* Responsive */
+/* --- Responsive --- */
 @media (max-width: 768px) {
   .shine-text {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    transform: scaleY(1.2); /* Slightly less stretch on mobile */
   }
-  .shine-section {
-    padding: 80px 5%;
+
+  .shine-section-wrapper {
+    padding: 20px 5% 30px;
+  }
+
+  .stats-counter-container .stat-item {
+    display: block;
+    margin: 15px 0; /* Stack vertically with less gap */
   }
 }

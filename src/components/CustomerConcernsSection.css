@@ -6,8 +6,9 @@
 }
 
 .customer-concerns h2 {
-  font-size: 3.5rem;
-  margin-bottom: 60px;
+  font-size: 3rem;
+  margin-bottom: 15px;
+  margin-top: 15px;
   font-family: var(--font-primary);
 }
 

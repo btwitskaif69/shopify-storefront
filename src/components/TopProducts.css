@@ -1,6 +1,8 @@
-/* src/components/TopProducts.css */
+/* TopProducts.css */
+
+/* ---------- Section ---------- */
 .top-products-section {
-  padding: 80px 5%;
+  padding: 40px 5%;
   background-color: var(--color-white);
   text-align: center;
 }
@@ -13,29 +15,39 @@
   color: var(--color-deep-mauve);
 }
 
+/* ---------- Grid (4 cols desktop) ---------- */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* ---------- Card ---------- */
+.product-card-wrapper {
+  text-align: left; /* override section center */
 }
 
 .product-card {
   text-decoration: none;
   color: var(--color-deep-mauve);
-  text-align: left;
+  display: block; /* link fills wrapper */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left; /* ensure details align left */
 }
 
 .product-card:hover {
-    transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 
+/* ---------- Image ---------- */
 .product-image-container {
   width: 100%;
-  aspect-ratio: 3 / 4; /* Creates a nice portrait aspect ratio */
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background-color: var(--color-soft-blush);
   margin-bottom: 15px;
+  position: relative; /* for QUICK VIEW overlay */
 }
 
 .product-image-container img {
@@ -46,26 +58,67 @@
 }
 
 .product-card:hover .product-image-container img {
-    transform: scale(1.05);
+  transform: scale(1.05);
+}
+
+/* QUICK VIEW overlay */
+.quick-view {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-family: var(--font-secondary);
+  font-weight: 600;
+}
+
+.product-card:hover .quick-view {
+  opacity: 1;
+}
+
+/* ---------- Details (default) ---------- */
+.product-info {
+  padding: 0 5px;
+  display: flex;
+  flex-direction: column;   /* stack */
+  align-items: flex-start;  /* left align */
+  gap: 4px;                 /* compact spacing */
 }
 
 .product-title {
   font-family: var(--font-secondary);
   font-size: 1.1rem;
   font-weight: 600;
-  margin: 0 0 5px 0;
+  margin: 0 0 4px 0;
+  line-height: 1.35;
+  color: var(--color-deep-mauve); /* fixed var() syntax */
 }
 
 .product-price {
   font-family: var(--font-secondary);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 400; /* lighter like your reference */
+  margin: 0 0 4px 0;
+  color: #000;
+}
+
+.star-rating {
+  color: #f5a623;
+  font-size: 0.95rem;
+  letter-spacing: 0.25px;
   margin: 0;
 }
-/* Add this to the bottom of src/components/TopProducts.css */
+
+/* ---------- View All Button ---------- */
 .view-all-button {
   display: inline-block;
-  margin-top: 40px;
   padding: 12px 30px;
+  margin-bottom: 50px;
   font-family: var(--font-secondary);
   font-size: 1rem;
   font-weight: 600;
@@ -81,4 +134,53 @@
 .view-all-button:hover {
   background-color: var(--color-deep-mauve);
   color: var(--color-white);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 cols on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* 1 col on mobile */
+  }
+  .section-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* =========================================================
+   HARD OVERRIDES — ensure Name → Price → Rating, each full row
+   (useful if other global CSS tries to lay out side-by-side)
+   ========================================================= */
+.product-card .product-info{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 4px !important;
+}
+
+.product-card .product-title,
+.product-card .product-price,
+.product-card .star-rating{
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  float: none !important;
+  clear: both !important;
+}
+
+.product-card .product-title{ order: 1 !important; }
+.product-card .product-price{ order: 2 !important; }
+.product-card .star-rating{  order: 3 !important; }
+
+/* guard against any stray grid styles */
+.product-card .product-info{
+  grid-auto-flow: unset !important;
+  grid-template-columns: unset !important;
 }

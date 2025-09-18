@@ -86,7 +86,7 @@ export const PrivacyPolicyPage = () => (
 
     <h2>8. Contact / Grievance Officer</h2>
     <p>
-      Email: <a href="mailto:privacy@delan.com">privacy@delan.com</a> <br />
+      Email: <a href="mailto:privacy@delan.in">privacy@delan.in</a> <br />
       Phone: <a href="tel:+919310329849">+91 93103 29849</a>
     </p>
   </PageWrapper>
@@ -171,7 +171,7 @@ export const ReturnsPage = () => (
 
     <h2>Process</h2>
     <ol>
-      <li>Email support@delan.com within the timeframe with order ID</li>
+      <li>Email support@delan.in within the timeframe with order ID</li>
       <li>We will schedule a reverse pickup</li>
       <li>Refunds processed in 5–7 days after quality check</li>
       <li>Exchanges shipped within 2–3 business days subject to stock</li>
@@ -185,9 +185,10 @@ export const ReturnsPage = () => (
 
     <h2>Contact Us</h2>
     <p>
-      Email: <a href="mailto:support@delan.com">support@delan.com</a> <br />
+      Email: <a href="mailto:support@delan.in">support@delan.in</a> <br />
       Phone: <a href="tel:+919310329849">+91 93103 29849</a>
     </p>
+
   </PageWrapper>
 );
 
@@ -228,5 +229,10 @@ export const AboutUsPage = () => (
     <p>
       Welcome to <strong>Delan</strong>. 25 years of elegance, and we’re just getting started.
     </p>
+    <img src='/images/story-background.png' alt='story-image' className='story-image'/>
+    <h2>The Delan Essence</h2>
+    <p>From timeless co-ord sets to empowering silhouettes, we’ve reimagined what modern fashion means for women.
+Across India, women aren’t just wearing Delan—they’re expressing confidence, embracing individuality, and shaping
+their own stories with every outfit.</p>
   </PageWrapper>
 );

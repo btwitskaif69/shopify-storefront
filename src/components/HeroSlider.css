@@ -1,0 +1,56 @@
+/* src/components/HeroSlider.css */
+
+/* =======================
+   Base Styles
+   ======================= */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 90vh;                /* Desktop default height */
+  overflow: hidden;
+  background-color: #f0f0f0;   /* Fallback background */
+}
+
+.slide {
+  position: absolute;
+  inset: 0;                    /* shorthand for top/right/bottom/left = 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* fills container, no black bars */
+  object-position: center;
+  opacity: 0;                  /* hidden by default */
+  transition: opacity 1.5s ease-in-out;
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;                  /* only active slide is visible */
+  z-index: 2;
+}
+
+/* =======================
+   Responsive Adjustments
+   ======================= */
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .hero-slider {
+    height: 70vh;
+    width: auto;              /* maintain full width & good aspect on tablets */
+  }
+  .slide {
+    position: absolute;        /* keep overlapping so only one shows */
+    object-fit: cover;
+  }
+}
+
+/* Mobiles (≤640px) */
+@media (max-width: 640px) {
+  .hero-slider {
+    height: 60vh;              /* slightly smaller for phones */
+  }
+  .slide {
+    position: absolute;
+    object-fit: cover;
+  }
+}

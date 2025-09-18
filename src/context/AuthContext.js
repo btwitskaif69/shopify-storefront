@@ -52,8 +52,14 @@ const LOGOUT = gql`
 export const AuthProvider = ({ children }) => {
   const [customer, setCustomer] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('customer_access_token'));
+  const [authChecked, setAuthChecked] = useState(false); // ✅ 1. Add the authChecked state
 
-  const [getCustomer, { data: customerData }] = useLazyQuery(GET_CUSTOMER);
+  // ✅ 2. Add callbacks to set authChecked=true after the query finishes
+  const [getCustomer, { data: customerData }] = useLazyQuery(GET_CUSTOMER, {
+    onCompleted: () => setAuthChecked(true),
+    onError: () => setAuthChecked(true)
+  });
+
   const [loginMutation] = useMutation(LOGIN);
   const [signupMutation] = useMutation(CUSTOMER_CREATE);
   const [logoutMutation] = useMutation(LOGOUT);
@@ -61,12 +67,20 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       getCustomer({ variables: { customerAccessToken: token } });
+    } else {
+      // ✅ 3. If there's no token, the check is done immediately
+      setAuthChecked(true);
     }
   }, [token, getCustomer]);
 
   useEffect(() => {
-    if (customerData && customerData.customer) {
+    if (customerData?.customer) {
       setCustomer(customerData.customer);
+    } else if (customerData) {
+      // If the query ran but found no customer (invalid token), log them out
+      localStorage.removeItem('customer_access_token');
+      setCustomer(null);
+      setToken(null);
     }
   }, [customerData]);
 
@@ -78,7 +92,6 @@ export const AuthProvider = ({ children }) => {
     if (data.customerCreate.customerUserErrors.length > 0) {
       throw new Error(data.customerCreate.customerUserErrors[0].message);
     }
-    // After successful signup, log the user in immediately
     return login(email, password);
   };
 
@@ -106,7 +119,16 @@ export const AuthProvider = ({ children }) => {
     window.location.href = '/account/login';
   };
 
-  const value = { customer, signup, login, logout };
+  // ✅ 4. Add isLoggedIn and authChecked to the context value
+  const value = { 
+    customer, 
+    customerAccessToken: token,
+    isLoggedIn: !!customer,
+    authChecked,
+    signup, 
+    login, 
+    logout 
+  };
 
   return (
     <AuthContext.Provider value={value}>

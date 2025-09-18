@@ -1,4 +1,15 @@
-/* --- Top Bar & Icon Styles --- */
+/* =========================
+   Header – Global / Base
+   ========================= */
+:root {
+  /* Fallbacks if your theme vars are missing */
+  --color-white: #fff;
+  --color-soft-blush: #eee5ea;
+  --color-deep-mauve: #4b234a;
+  --focus-ring: 0 0 0 3px rgba(75, 35, 74, 0.2);
+  --shadow-1: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
 .site-header {
   padding: 10px 5%;
   border-bottom: 1px solid var(--color-soft-blush);
@@ -6,9 +17,17 @@
   color: var(--color-deep-mauve);
   position: sticky;
   top: 0;
-  z-index: 1000; /* header above everything */
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
 
+/* hide on scroll down / show on scroll up (toggled via .hidden/.visible) */
+.site-header.hidden { transform: translateY(-100%); }
+.site-header.visible { transform: translateY(0); }
+
+/* =========================
+   Top Bar
+   ========================= */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -35,15 +54,31 @@
 
 .logo-image {
   height: 45px;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .header-link,
 .header-icon {
   text-decoration: none;
   color: var(--color-deep-mauve);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px; /* For icons and text like 'Track Order' */
+  gap: 8px;
+}
+
+.header-link:focus-visible,
+.header-icon:focus-visible,
+.dropdown-trigger:focus-visible,
+.close-sidebar-btn:focus-visible,
+.hamburger-menu:focus-visible,
+.sidebar-link:focus-visible,
+.sidebar-dropdown-toggle:focus-visible,
+.user-menu-link:focus-visible,
+.logout-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 6px;
 }
 
 .header-icon {
@@ -51,7 +86,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  gap: 0; /* Override gap for pure icons */
+  gap: 0;
 }
 
 .cart-icon { position: relative; }
@@ -61,7 +96,7 @@
   top: -5px;
   right: -10px;
   background-color: var(--color-deep-mauve);
-  color: white;
+  color: #fff;
   border-radius: 50%;
   width: 18px;
   height: 18px;
@@ -71,7 +106,9 @@
   justify-content: center;
 }
 
-/* --- User Dropdown Menu --- */
+/* =========================
+   User Menu (desktop)
+   ========================= */
 .user-menu { position: relative; }
 
 .user-button {
@@ -79,23 +116,28 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  color: var(--color-deep-mauve);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .user-name { font-size: 0.9rem; }
 
 .user-dropdown {
   position: absolute;
-  top: 120%; /* give it a little space */
+  top: 120%;
   right: 0;
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #eee;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-1);
   display: flex;
   flex-direction: column;
   gap: 5px;
   z-index: 1200;
+  min-width: 160px;
 }
 
 .logout-button,
@@ -106,13 +148,21 @@
   font-size: 0.9rem;
   color: var(--color-deep-mauve);
   white-space: nowrap;
-  padding: 5px;
+  padding: 8px 10px;
   display: block;
   text-decoration: none;
   text-align: left;
+  border-radius: 6px;
 }
 
-/* --- Login / Signup Links --- */
+.logout-button:hover,
+.user-menu-link:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+/* =========================
+   Login / Signup (desktop)
+   ========================= */
 .login-signup-links {
   display: flex;
   align-items: center;
@@ -130,15 +180,18 @@
   color: var(--color-deep-mauve);
 }
 
-/* --- Main Navigation (Desktop) --- */
+/* =========================
+   Main Navigation (desktop)
+   ========================= */
 .main-nav {
   display: flex;
   justify-content: center;
   padding-top: 10px;
   border-top: 1px solid var(--color-soft-blush);
   background: var(--color-white);
-  z-index: 1100; /* sits above page content */
+  z-index: 1100;
 }
+
 .main-nav > ul {
   list-style: none;
   margin: 0;
@@ -146,12 +199,14 @@
   display: flex;
   height: 100%;
 }
+
 .main-nav > ul > li {
-  margin: 0;
   position: relative;
   display: flex;
   align-items: center;
+  margin: 0 2px;
 }
+
 .main-nav a {
   padding: 10px 20px;
   text-decoration: none;
@@ -159,66 +214,76 @@
   font-weight: 500;
   text-transform: uppercase;
   font-size: 0.8rem;
-  font-family: var(--font-secondary);
-  transition: color 0.2s ease;
+  font-family: var(--font-secondary, sans-serif);
+  transition: color 0.2s ease, background 0.2s ease;
+  border-radius: 6px;
 }
-.main-nav a:hover,
-.main-nav a.active { color: #333; }
 
-/* caret animation on hover/open */
+.main-nav a:hover,
+.main-nav a.active { color: #333; background: rgba(0,0,0,0.03); }
+
+/* Dropdown trigger button (for top-level with children) */
+.dropdown-trigger {
+  background: none;
+  border: 0;
+  padding: 10px 20px;
+  margin: 0;
+  font: inherit;
+  color: var(--color-deep-mauve);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+}
+.dropdown-trigger:hover,
+.dropdown-trigger:focus {
+  color: #333;
+  background: rgba(0,0,0,0.03);
+}
+
 .main-nav .arrow {
   margin-left: 6px;
   font-size: 12px;
   transition: transform .2s ease;
 }
-.dropdown:hover .arrow,
-.dropdown .dropdown-menu.is-open ~ .arrow { /* fallback */
-  transform: rotate(180deg);
-}
 
-/* =========  MEGA DROPDOWN (replaces the old single-column)  ========= */
+.dropdown:hover .arrow,
+.dropdown.open .arrow { transform: rotate(180deg); }
+
+/* Dropdown panel */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 100%;
   left: 0;
-
-  /* panel look */
-  width: 720px;                 /* adjust to taste */
-  background: var(--color-white);
+  background: #fff;
   border: 1px solid var(--color-soft-blush);
-  border-radius: 10px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-
-  padding: 16px 14px;
-  margin: 12px 0 0 0;
-
-  /* multi-column layout */
-  column-count: 3;              /* 3 columns like Shopify */
-  column-gap: 24px;
-
-  z-index: 1250;
-  max-height: 60vh;             /* scroll if too tall */
-  overflow: auto;
+  min-width: 220px;
+  list-style: none;
+  padding: 8px 0;
+  margin: 4px 0 0 0;
+  box-shadow: var(--shadow-1);
+  z-index: 1200;
+  border-radius: 8px;
 }
 
-/* each item becomes a block; prevent column breaks inside a row */
-.dropdown-menu li {
-  break-inside: avoid;
-  padding: 0;                   /* we’ll pad the link instead */
-  margin: 0 0 6px 0;
-  white-space: nowrap;
-}
+.dropdown-menu.is-open,
+.dropdown:hover > .dropdown-menu { display: block; }
 
-/* link look inside mega panel */
+.dropdown-menu li { padding: 0; }
+
 .dropdown-menu li a {
   display: block;
-  padding: 8px 10px;
+  padding: 10px 16px;
   color: var(--color-deep-mauve);
   text-decoration: none;
   font-size: 0.9rem;
-  border-radius: 6px;
-  transition: background .18s ease, color .18s ease;
+  white-space: nowrap;
+  transition: background .2s ease, color .2s ease;
+  border-radius: 0;
 }
 .dropdown-menu li a:hover,
 .dropdown-menu li a:focus {
@@ -227,15 +292,11 @@
   outline: none;
 }
 
-/* open state (JS adds .is-open) */
-.dropdown-menu.is-open { display: block; }
-
-/* also open on pure hover as a graceful fallback */
-.dropdown:hover > .dropdown-menu { display: block; }
-
-/* --- NEW: Hamburger Menu --- */
+/* =========================
+   Hamburger (mobile/tablet)
+   ========================= */
 .hamburger-menu {
-  display: none; /* Hidden on desktop */
+  display: none;           /* visible via media query */
   background: none;
   border: none;
   cursor: pointer;
@@ -244,13 +305,12 @@
   padding: 0;
 }
 
-/* --- NEW: Sidebar Styles --- */
+/* =========================
+   Sidebar (mobile/tablet)
+   ========================= */
 .sidebar-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1050;
   opacity: 0;
@@ -261,19 +321,24 @@
   opacity: 1;
   visibility: visible;
 }
+
 .sidebar-container {
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 84vw;
+  max-width: 320px;
   height: 100%;
-  background-color: var(--color-white);
+  background-color: #fff;
   z-index: 1100;
   transform: translateX(-100%);
   transition: transform 0.3s ease-in-out;
-  padding: 20px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.12);
 }
 .sidebar-container.open { transform: translateX(0); }
 
@@ -282,43 +347,41 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--color-soft-blush);
-  padding-bottom: 15px;
-  margin-bottom: 15px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
 }
-.sidebar-header h3 { margin: 0; color: var(--color-deep-mauve); }
+.sidebar-header h3 {
+  margin: 0;
+  color: var(--color-deep-mauve);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
 .close-sidebar-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--color-deep-mauve);
+  padding: 4px;
+  border-radius: 6px;
 }
 
-.sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
-
-.sidebar-nav li a, .sidebar-nav .sidebar-dropdown-toggle {
+/* Sidebar generic link */
+.sidebar-link {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 10px;
+  padding: 12px 10px;
   text-decoration: none;
   color: var(--color-deep-mauve);
   font-weight: 500;
   font-size: 1rem;
+  border-radius: 8px;
 }
+.sidebar-link:hover { background: rgba(0,0,0,.03); }
 
-.sidebar-dropdown-toggle { cursor: pointer; justify-content: space-between; }
-.sidebar-dropdown-toggle .arrow { transition: transform 0.2s ease; }
-.sidebar-dropdown-toggle .arrow.up { transform: rotate(180deg); }
-
-.sidebar-dropdown-menu { list-style: none; padding-left: 20px; }
-.sidebar-dropdown-menu a { font-size: 0.9rem; padding: 10px; }
-
-.sidebar-divider hr {
-  border: 0;
-  border-top: 1px solid var(--color-soft-blush);
-  margin: 15px 0;
-}
+/* Account section */
+.sidebar-account { display: flex; flex-direction: column; gap: 4px; }
 
 .sidebar-logout-button {
   background: none;
@@ -326,27 +389,104 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
-  padding: 15px 10px;
+  padding: 12px 10px;
   font-size: 1rem;
   color: var(--color-deep-mauve);
   font-weight: 500;
-  font-family: inherit; /* ensure consistent font */
+  font-family: inherit;
+  border-radius: 8px;
+}
+.sidebar-logout-button:hover { background: rgba(0,0,0,.03); }
+
+/* Dividers */
+.sidebar-divider hr {
+  border: 0;
+  border-top: 1px solid var(--color-soft-blush);
+  margin: 12px 0;
 }
 
-/* --- Media Query for Responsiveness --- */
+/* Sidebar nav trees */
+.sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
+.sidebar-section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 8px 10px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--color-deep-mauve);
+  opacity: .85;
+}
+.sidebar-note { padding: 10px; color: #666; font-size: .9rem; }
+
+/* Toggle for groups (Categories) */
+.sidebar-dropdown-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 10px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--color-deep-mauve);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.sidebar-dropdown-toggle:hover { background: rgba(0,0,0,.03); }
+.sidebar-dropdown-toggle .arrow { transition: transform 0.2s ease; }
+.sidebar-dropdown-toggle .arrow.up { transform: rotate(180deg); }
+
+.sidebar-dropdown-menu {
+  list-style: none;
+  padding-left: 14px;
+  margin: 0 0 6px 0;
+}
+.sidebar-dropdown-menu a {
+  display: block;
+  padding: 10px;
+  color: var(--color-deep-mauve);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-radius: 6px;
+}
+.sidebar-dropdown-menu a:hover { background: rgba(0,0,0,.03); }
+
+/* =========================
+   Responsive
+   ========================= */
+/* Mobile & Tablet: Use sidebar; hide desktop nav and some top-bar links */
 @media (max-width: 992px) {
-  .main-nav { display: none; }          /* Hide main nav on mobile */
-  .hamburger-menu { display: block; }   /* Show hamburger on mobile */
+  .main-nav { display: none; }
+  .hamburger-menu { display: inline-flex; }
   .track-order-link,
-  .login-signup-links { display: none; }/* Hide these from top bar on mobile */
+  .login-signup-links { display: none; } /* moved into sidebar */
   .user-menu .user-name { display: none; }
   .top-bar-left { justify-content: flex-start; }
-  .logo-container { flex: 3; }          /* Give logo more space */
-  .top-bar-right { gap: 15px; }         /* Reduce gap between icons */
+  .logo-container { flex: 3; }
+  .top-bar-right { gap: 15px; }
 }
 
-/* Optional: make mega-menu full-width on small laptops if you want
-@media (max-width: 1200px) {
-  .dropdown-menu { width: 90vw; left: 5vw; }
+/* Small laptop range – keep desktop nav visible, but you can switch to sidebar if preferred */
+@media (max-width: 1200px) and (min-width: 993px) {
+  /* Optional:
+  .main-nav { display: none; }
+  .hamburger-menu { display: inline-flex; }
+  */
 }
-*/
+/* Hide top-bar Track Order on mobile + tablet (shows only inside sidebar) */
+@media (max-width: 1200px) {
+  .track-order-link {
+    display: none !important; /* override .header-link display */
+  }
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition: none; }
+  .dropdown-menu { transition: none; }
+  .sidebar-overlay,
+  .sidebar-container { transition: none; }
+}

@@ -1,4 +1,6 @@
 /* src/App.css */
+
+/* Hero Section */
 .hero-banner {
   position: relative;
   width: 100%;
@@ -7,6 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 40px; /* Reduced spacing */
 }
 
 .hero-banner .hero-video {
@@ -21,7 +24,7 @@
   z-index: 1;
 }
 
-/* Using Deep Mauve for the overlay for brand consistency */
+/* Overlay for hero video */
 .hero-banner::after {
   content: '';
   position: absolute;
@@ -46,7 +49,7 @@
   font-family: var(--font-primary);
   font-weight: 600;
   margin: 0 0 10px 0;
-  text-transform: none; /* More elegant than uppercase */
+  text-transform: none;
 }
 
 .hero-content p {
@@ -55,8 +58,20 @@
   font-family: var(--font-secondary);
 }
 
+/* Generic Section Styling for Consistent Spacing */
+section {
+  padding-top: 10px;  /* Space above each section */
+  padding-bottom: 10px; /* Space below each section */
+}
+
+section:not(:last-child) {
+  /* CHANGED: Reduced margin between sections from 60px to 40px */
+  margin-bottom: 10px; /* Gap between consecutive sections */
+}
+
+/* Next Section */
 .next-section {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,26 +79,26 @@
   background-color: var(--color-deep-mauve);
   color: var(--color-white);
   text-align: center;
+  padding: 20px 20px; /* Extra padding inside next section */
 }
 
 .next-section h2 {
-    font-size: 3rem;
-    font-family: var(--font-primary);
-    font-weight: 600;
+  font-size: 3rem;
+  font-family: var(--font-primary);
+  font-weight: 600;
 }
 
-/* In src/index.css or src/App.css */
-:root {
-  /* -- NEW COLOR THEME -- */
-  --color-deep-mauve: #642c44;
-  --color-soft-blush: #f5e6e0;
-  
-  /* -- Supporting Colors & Fonts (ensure these are set) -- */
-  --color-white: #ffffff;
-  --color-dark-text: #333333;
-  --color-accent-gold: #f5a623;
-  
-  /* -- Fonts (ensure these match your project) -- */
-  --font-primary: 'Playfair Display', serif;
-  --font-secondary: 'Montserrat', sans-serif;
+
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: var(--color-soft-blush);
+  margin-top: 0%;
 }

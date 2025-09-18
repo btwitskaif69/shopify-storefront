@@ -1,29 +1,88 @@
+/* src/components/StaticPages.css */
+
+/* ---------- Base Container ---------- */
 .static-page-container {
   max-width: 800px;
   margin: 60px auto;
   padding: 0 5%;
-  font-family: var(--font-secondary);
+  font-family: var(--font-secondary, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial);
   color: #333;
 }
 
+/* ---------- Title ---------- */
 .static-page-title {
-  font-family: var(--font-primary);
-  font-size: 3rem;
+  font-family: var(--font-primary, Georgia, 'Times New Roman', serif);
+  font-size: clamp(2rem, 4vw, 3rem);
   text-align: center;
-  margin-bottom: 40px;
-  color: var(--color-deep-mauve);
+  margin: 0 0 40px 0;
+  color: var(--color-deep-mauve, #642c44);
+  line-height: 1.15;
 }
 
+/* ---------- Content ---------- */
 .static-page-content {
   line-height: 1.8;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
 }
 
 .static-page-content p {
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
 }
 
 .static-page-content a {
-  color: var(--color-deep-mauve);
+  color: var(--color-deep-mauve, #642c44);
   text-decoration: underline;
+}
+
+.static-page-content a:hover {
+  text-decoration: none;
+}
+
+/* Headings inside content */
+.static-page-content h2 {
+  font-family: var(--font-primary, Georgia, 'Times New Roman', serif);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  color: var(--color-deep-mauve, #642c44);
+  margin: 28px 0 12px 0;
+  line-height: 1.25;
+}
+
+/* Lists */
+.static-page-content ul,
+.static-page-content ol {
+  padding-left: 1.25rem;
+  margin: 0 0 20px 0;
+}
+
+.static-page-content li {
+  margin: 6px 0;
+}
+
+/* Emphasis */
+.static-page-content strong {
+  font-weight: 700;
+}
+
+/* ---------- Story Image (centered & responsive) ---------- */
+.static-page-content .story-image {
+  display: block;              /* enables margin auto centering */
+  margin: 24px auto;           /* center horizontally + vertical spacing */
+  max-width: 100%;             /* responsive */
+  height: auto;                /* preserve aspect ratio */
+  border-radius: 8px;          /* optional polish */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* optional polish */
+}
+
+/* ---------- Small Screen Tweaks ---------- */
+@media (max-width: 600px) {
+  .static-page-container {
+    margin: 40px auto;
+  }
+  .static-page-content {
+    line-height: 1.75;
+  }
+  .static-page-content .story-image {
+    margin: 16px auto 28px;
+    border-radius: 6px;
+  }
 }

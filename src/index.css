@@ -8,10 +8,12 @@
   --color-deep-mauve: #642c44;
   --color-soft-blush: #f5e6e0;
   --color-white: #ffffff;
+  --color-dark-text: #333333;
+  --color-accent-gold: #f5a623;
 
   /* DELAN Typography */
-  --font-primary: 'Cormorant Garamond', serif; /* Proxy for CALLISTO */
-  --font-secondary: 'Montserrat', sans-serif; /* Proxy for HK Grotesk */
+  --font-primary: 'Cormorant Garamond', serif;
+  --font-secondary: 'Montserrat', sans-serif;
 }
 
 body {
