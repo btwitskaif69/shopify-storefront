@@ -238,20 +238,12 @@ export default function Header() {
                       </ul>
                     )}
                   </li>
-<<<<<<< HEAD
-                ))}
-              </ul>
-            </li>
-            <li><Link to="/collections/offers">OUR OFFERS</Link></li>
-            <li><Link to="contact">CONTACT US</Link></li>
-=======
                 );
               })}
 
             {/* You can add extra static items if needed:
                 <li><Link to="/contact">Contact</Link></li>
             */}
->>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
           </ul>
         </nav>
       </header>
@@ -325,12 +317,6 @@ export default function Header() {
             <li className="sidebar-divider">
               <hr />
             </li>
-<<<<<<< HEAD
-            <li><Link to="/collections/offers" onClick={closeSidebar}>Our Offers</Link></li>
-            <li><Link to="/contact" onClick={closeSidebar}>Contact Us</Link></li>
-            <li className="sidebar-divider"><hr /></li>
-            <li><Link to="/tools/track-order" onClick={closeSidebar}><FaTruck /> Track Order</Link></li>
-=======
 
             <li>
               <Link to="/tools/track-order" onClick={closeSidebar}>
@@ -338,7 +324,6 @@ export default function Header() {
               </Link>
             </li>
 
->>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
             {customer ? (
               <>
                 <li>

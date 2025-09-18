@@ -18,7 +18,6 @@ import ProductReviews from './components/ProductReviews';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import CartPage from './components/CartPage';
-import ContactUs from "./components/ContactUs";
 
 
 // Import the static pages
