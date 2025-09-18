@@ -1,0 +1,95 @@
+/* Wrapper for background + form */
+.contact-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh; /* Full screen height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* DotGrid background */
+.dotgrid-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Contact form container (card style) */
+.contact-container {
+  position: relative;
+  z-index: 1; /* Sit above DotGrid */
+  max-width: 600px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 30px 25px;
+  background: rgba(255, 255, 255, 0.92); /* slight transparency */
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px); /* subtle glass effect */
+}
+
+/* Title */
+.contact-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #5a1f36;
+}
+
+/* Form layout */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Labels */
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Inputs + textarea */
+.contact-form input,
+.contact-form textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #5a1f36;
+  box-shadow: 0 0 0 3px rgba(90, 31, 54, 0.15);
+}
+
+/* Submit button */
+.contact-form button {
+  padding: 14px;
+  background: #5a1f36;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.25s ease, transform 0.1s ease;
+}
+
+.contact-form button:hover {
+  background: #7a274b;
+  transform: translateY(-2px);
+}
+
+.contact-form button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

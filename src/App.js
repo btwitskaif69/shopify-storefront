@@ -15,6 +15,8 @@ import ProductReviews from './components/ProductReviews';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import CartPage from './components/CartPage';
+import ContactUs from "./components/ContactUs";
+
 
 // Import the static pages
 import {
@@ -102,7 +104,7 @@ function App() {
                 <Route path="/collections/:handle" element={<MainLayout><CollectionPage /></MainLayout>} />
                 
                 {/* Footer Page Routes */}
-                <Route path="/contact" element={<MainLayout><ContactPage /></MainLayout>} />
+                <Route path="/contact" element={<MainLayout><ContactUs /></MainLayout>} />
                 <Route path="/privacy-policy" element={<MainLayout><PrivacyPolicyPage /></MainLayout>} />
                 <Route path="/terms-conditions" element={<MainLayout><TermsPage /></MainLayout>} />
                 <Route path="/returns-exchange" element={<MainLayout><ReturnsPage /></MainLayout>} />
