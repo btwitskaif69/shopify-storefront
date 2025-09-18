@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Wrapper for background + form */
 .contact-wrapper {
   position: relative;
@@ -34,20 +35,37 @@
 }
 
 /* Title */
+=======
+.contact-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+>>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
 .contact-container h1 {
   text-align: center;
   margin-bottom: 20px;
   color: #5a1f36;
 }
 
+<<<<<<< HEAD
 /* Form layout */
+=======
+>>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
 .contact-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+<<<<<<< HEAD
 /* Labels */
+=======
+>>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
 .contact-form label {
   display: flex;
   flex-direction: column;
@@ -55,6 +73,7 @@
   color: #333;
 }
 
+<<<<<<< HEAD
 /* Inputs + textarea */
 .contact-form input,
 .contact-form textarea {
@@ -75,21 +94,39 @@
 /* Submit button */
 .contact-form button {
   padding: 14px;
+=======
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.contact-form button {
+  padding: 12px;
+>>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
   background: #5a1f36;
   color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
+<<<<<<< HEAD
   transition: background 0.25s ease, transform 0.1s ease;
+=======
+>>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
 }
 
 .contact-form button:hover {
   background: #7a274b;
+<<<<<<< HEAD
   transform: translateY(-2px);
 }
 
 .contact-form button:disabled {
   background: #ccc;
   cursor: not-allowed;
+=======
+>>>>>>> bf89f051a3026c67d62d4f815c83700b1dc01ffa
 }
