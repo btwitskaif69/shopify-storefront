@@ -5,6 +5,7 @@
 /* Wrapper keeps a seamless background from intro through stats */
 .stats-wrapper {
   background-color: #fdf5f5; /* matches stats-section */
+  margin-bottom: 0px !important;
 }
 
 /* ---------- Intro (H1 + paragraph) ---------- */

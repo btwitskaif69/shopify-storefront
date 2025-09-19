@@ -19,6 +19,9 @@ export default function Categories() {
 
   return (
     <div className="container">
+      {/* ✅ Added heading only */}
+      <h2 className="categories-heading">Our Curated Collection</h2>
+
       <div className="main">
         <div className="category-list">
           {categories.map((cat, idx) => (

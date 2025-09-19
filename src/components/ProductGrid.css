@@ -204,7 +204,7 @@
 .view-all-button {
   display: inline-block;
   margin-top: 5px;
-  margin-bottom: 50px;
+  margin-bottom: 100px !important;
   padding: 12px 30px;
   font-family: var(--font-secondary);
   font-size: 1rem;

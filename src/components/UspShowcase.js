@@ -38,31 +38,27 @@ const UspShowcase = () => {
   ];
 
   const handleScroll = () => {
-    if (componentRef.current) {
-      const { height } = componentRef.current.getBoundingClientRect();
-      const scrollOffset = window.innerHeight * 0.5;
-      const scrollPosition = window.scrollY + scrollOffset;
-      const componentTop = componentRef.current.offsetTop;
+    if (!componentRef.current) return;
 
-      const scrollProgress = scrollPosition - componentTop;
-      const sectionHeight = height / usps.length;
+    const { height } = componentRef.current.getBoundingClientRect();
+    const scrollOffset = window.innerHeight * 0.5;
+    const scrollPosition = window.scrollY + scrollOffset;
+    const componentTop = componentRef.current.offsetTop;
 
-      const newIndex = Math.min(
-        usps.length - 1,
-        Math.max(0, Math.floor(scrollProgress / sectionHeight))
-      );
+    const scrollProgress = scrollPosition - componentTop;
+    const sectionHeight = height / usps.length;
 
-      if (newIndex !== activeIndex) {
-        setActiveIndex(newIndex);
-      }
-    }
+    const newIndex = Math.min(
+      usps.length - 1,
+      Math.max(0, Math.floor(scrollProgress / sectionHeight))
+    );
+
+    if (newIndex !== activeIndex) setActiveIndex(newIndex);
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [activeIndex]);
 
   const styles = {
@@ -70,7 +66,7 @@ const UspShowcase = () => {
       display: 'flex',
       minHeight: '350vh',
       backgroundColor: '#fff',
-      fontFamily: 'system-ui, sans-serif',
+      fontFamily: 'var(--font-primary)',
     },
     leftPanel: {
       width: '50%',
@@ -84,18 +80,20 @@ const UspShowcase = () => {
     },
     rightPanel: {
       width: '50%',
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      padding: '30vh 10vw 0 0',
       position: 'sticky',
       top: 0,
       height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',         // column layout for static bottom button
+      justifyContent: 'flex-start',
+      padding: '30vh 10vw 40px 0',      // extra bottom padding
     },
     uspContent: {
       maxWidth: '500px',
       lineHeight: '1.6',
       paddingRight: '80px',
+      position: 'relative',
+      flexGrow: 1,                      // take up all space above button
     },
     uspItem: {
       transition: 'opacity 0.6s ease, transform 0.6s ease',
@@ -116,6 +114,31 @@ const UspShowcase = () => {
       transition: 'all 0.8s ease-in-out',
       objectFit: 'contain',
     },
+    viewBtn: {
+      marginTop: 'auto',                // push to bottom
+      alignSelf: 'flex-start',
+      padding: '14px 28px',
+      backgroundColor: '#a64d79',
+      color: '#fff',
+      border: '1px solid #a64d79',
+      borderRadius: '999px',
+      fontFamily: 'var(--font-primary)',
+      fontSize: '14px',
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
+      cursor: 'pointer',
+      boxShadow: '0 8px 22px rgba(166,77,121,0.25)',
+      textDecoration: 'none',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    },
+    viewBtnHover: {
+      transform: 'translateY(-2px)',
+      boxShadow: '0 12px 28px rgba(166,77,121,0.3)',
+    },
+    arrow: { fontSize: '16px' },
   };
 
   const getImageStyle = (index) => {
@@ -147,7 +170,6 @@ const UspShowcase = () => {
         filter: 'blur(3px)',
       };
     }
-
     return {
       ...styles.image,
       opacity: 0,
@@ -155,6 +177,8 @@ const UspShowcase = () => {
       zIndex: 0,
     };
   };
+
+  const [hover, setHover] = useState(false);
 
   return (
     <div ref={componentRef} style={styles.container}>
@@ -167,12 +191,13 @@ const UspShowcase = () => {
               src={usp.image}
               alt={usp.title}
               style={getImageStyle(index)}
+              loading="lazy"
             />
           ))}
         </div>
       </div>
 
-      {/* Right side text */}
+      {/* Right side text with static bottom button */}
       <div style={styles.rightPanel}>
         <div style={styles.uspContent}>
           {usps.map((usp, index) => (
@@ -182,9 +207,7 @@ const UspShowcase = () => {
                 ...styles.uspItem,
                 opacity: activeIndex === index ? 1 : 0,
                 transform:
-                  activeIndex === index
-                    ? 'translateY(0)'
-                    : 'translateY(20px)',
+                  activeIndex === index ? 'translateY(0)' : 'translateY(20px)',
               }}
             >
               <h2
@@ -192,7 +215,6 @@ const UspShowcase = () => {
                   fontSize: '2.5rem',
                   marginBottom: '1rem',
                   whiteSpace: 'nowrap',
-                  fontFamily: 'var(--font-primary)', // 👈 ADDED: Uses the primary font
                 }}
               >
                 {usp.title}
@@ -200,10 +222,10 @@ const UspShowcase = () => {
               <p
                 style={{
                   fontSize: '1.3rem',
-                  color: 'a64d79;',
+                  color: '#a64d79',
                   marginBottom: '1rem',
                   lineHeight: '1.8',
-                  maxWidth: '500ch', // 👈 CHANGED: Adjusted for ~15 words per line
+                  maxWidth: '500ch',
                   wordWrap: 'break-word',
                   whiteSpace: 'normal',
                 }}
@@ -213,6 +235,16 @@ const UspShowcase = () => {
             </div>
           ))}
         </div>
+
+        {/* Static View Collection button */}
+        <a
+          href="/collections/dresses"
+          style={{ ...styles.viewBtn, ...(hover ? styles.viewBtnHover : {}) }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        >
+          View Collection <span style={styles.arrow}>→</span>
+        </a>
       </div>
     </div>
   );

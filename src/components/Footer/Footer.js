@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaInstagram, FaFacebook, FaTwitter } from 'react-icons/fa';
+import { FaInstagram, FaFacebook, FaPinterest, FaYoutube } from 'react-icons/fa';
 import './Footer.css';
 
 const Footer = () => {
@@ -19,6 +19,10 @@ const Footer = () => {
           <p className="footer-tagline">
             Timeless Elegance, Modern Sophistication.
           </p>
+          <span>
+            Office Address: Shop No. 3, Sco-17, HUDA Staff Colony, Sector 16,
+            Faridabad, Haryana 121002
+          </span>
         </div>
 
         {/* Navigation + Social Links */}
@@ -61,7 +65,22 @@ const Footer = () => {
               >
                 <FaFacebook />
               </a>
-              
+              <a
+                href="https://www.pinterest.com/delan"  // replace with your real Pinterest URL
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Pinterest"
+              >
+                <FaPinterest />
+              </a>
+              <a
+                href="https://www.youtube.com/@delan"   // replace with your real YouTube channel URL
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+              >
+                <FaYoutube />
+              </a>
             </div>
           </div>
         </div>
@@ -74,6 +93,5 @@ const Footer = () => {
     </footer>
   );
 };
-
 
 export default Footer;

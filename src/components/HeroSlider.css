@@ -1,5 +1,3 @@
-/* src/components/HeroSlider.css */
-
 /* =======================
    Base Styles
    ======================= */
@@ -11,20 +9,24 @@
   background-color: #f0f0f0;   /* Fallback background */
 }
 
-.slide {
+.slide,
+.hero-video {
   position: absolute;
-  inset: 0;                    /* shorthand for top/right/bottom/left = 0 */
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;           /* fills container, no black bars */
+  object-fit: cover;
   object-position: center;
-  opacity: 0;                  /* hidden by default */
+}
+
+/* Images start hidden; video is just shown */
+.slide {
+  opacity: 0;
   transition: opacity 1.5s ease-in-out;
   z-index: 1;
 }
-
 .slide.active {
-  opacity: 1;                  /* only active slide is visible */
+  opacity: 1;
   z-index: 2;
 }
 
@@ -36,21 +38,13 @@
 @media (max-width: 1024px) {
   .hero-slider {
     height: 70vh;
-    width: auto;              /* maintain full width & good aspect on tablets */
-  }
-  .slide {
-    position: absolute;        /* keep overlapping so only one shows */
-    object-fit: cover;
   }
 }
 
 /* Mobiles (≤640px) */
 @media (max-width: 640px) {
   .hero-slider {
-    height: 60vh;              /* slightly smaller for phones */
+    height: 80vh;              /* slightly smaller for phones */
   }
-  .slide {
-    position: absolute;
-    object-fit: cover;
-  }
+  /* Video replaces slides on mobile; no extra rules needed beyond base */
 }

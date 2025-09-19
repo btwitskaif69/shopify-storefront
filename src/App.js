@@ -40,6 +40,7 @@ import StatsCounter from './components/StatsCounter';
 import './App.css';
 import Sale from './components/Sale';
 import Offer from './components/Offer';
+import CuratedCollections from './components/CuratedCollections';
 
 
 // ✅ Create MainLayout with useLocation to check current route
@@ -65,14 +66,14 @@ const HomePage = () => {
       <CategoriesSection />
       <IntractiveModelSection />
       <StatsCounter /> {/* Stats Counter Component */}
-
+      <CoOrds_Section />
       <section id="top-products-section">
         <TopProducts />
       </section>
 
       
       <StickyNav />
-      <CoOrds_Section />
+      
       
       <section id="trousers-section">
         <TrousersSection />
@@ -87,7 +88,7 @@ const HomePage = () => {
       <section id="maxi-midi-dress-section">
         <MaxiMidiDressSection />
       </section>
-
+      {/* <CuratedCollections/> */}
       <div className="hide-on-mobile">
         <UspShowcase />
       </div>

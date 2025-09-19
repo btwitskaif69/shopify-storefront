@@ -7,6 +7,20 @@
   align-items: center;
   font-family: var(--font-primary);
   overflow-x: hidden; /* Prevent horizontal scroll */
+  /* ✅ allow the heading to sit above the main row without changing layout */
+  flex-wrap: wrap;
+}
+
+/* ✅ Heading (added) */
+.categories-heading {
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-primary);
+  color: var(--color-deep-mauve, #642c44);
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  font-weight: 700;
+  margin: 0 0 28px 0;
+  letter-spacing: 0.02em;
 }
 
 /* Main */

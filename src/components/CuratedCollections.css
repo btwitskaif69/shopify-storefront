@@ -1,0 +1,121 @@
+:root{
+  --mauve:#642c44;
+  --blush:#f6e9e6;
+}
+
+/* Section shell */
+.curated-section{
+  background: var(--blush);
+  padding: 48px 5%;
+}
+
+/* Header */
+.curated-header{
+  max-width: 1200px;
+  margin: 0 auto 20px;
+}
+
+.curated-title{
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  font-family: var(--font-primary, "Cormorant Garamond", serif);
+  font-style: italic;
+  letter-spacing: .04em;
+  color: var(--mauve);
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-weight: 600;
+}
+
+.curated-subtitle{
+  margin: 0 0 16px;
+  color: rgba(0,0,0,.6);
+  font-family: var(--font-secondary, Montserrat, sans-serif);
+  font-size: .95rem;
+}
+
+/* Swiper container */
+.curated-swiper{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6px 36px; /* room for arrows */
+}
+
+/* Arrows styled like screenshot */
+.curated-swiper .swiper-button-prev,
+.curated-swiper .swiper-button-next{
+  width: 38px;
+  height: 38px;
+  border: 2px solid rgba(0,0,0,.35);
+  border-radius: 50%;
+  color: rgba(0,0,0,.6);
+  background: transparent;
+}
+.curated-swiper .swiper-button-prev:after,
+.curated-swiper .swiper-button-next:after{
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* Card */
+.curated-card{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.curated-card-label{
+  font-family: var(--font-secondary, Montserrat, sans-serif);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.65);
+}
+
+/* Image block */
+.curated-card-img{
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.curated-card-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .35s ease;
+}
+.curated-card-img:hover img{
+  transform: scale(1.04);
+}
+
+/* Skeleton / error */
+.curated-skeleton-row{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 24px;
+}
+.skeleton .curated-card-img{
+  background: linear-gradient(90deg,#eee 25%,#f7f7f7 50%,#eee 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer{0%{background-position:0% 0}100%{background-position:100% 0}}
+
+.curated-error{
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff3f3;
+  color: #7a2d2d;
+  border: 1px solid #ffdede;
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+
+@media (max-width: 640px){
+  .curated-swiper{ padding: 6px 28px; }
+}
