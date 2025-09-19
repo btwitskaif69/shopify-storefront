@@ -39,6 +39,7 @@ import CoOrds_Section from './components/CoOrds_Section';
 import StatsCounter from './components/StatsCounter'; 
 import './App.css';
 import Sale from './components/Sale';
+import Offer from './components/Offer';
 
 
 // ✅ Create MainLayout with useLocation to check current route
@@ -91,6 +92,8 @@ const HomePage = () => {
         <UspShowcase />
       </div>
        <WatchAndBuy />
+
+       <Offer/>
 
       <section id="reviews-section">
         <ProductReviews />

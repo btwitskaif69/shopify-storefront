@@ -1,7 +1,7 @@
 /* src/components/ProductReviews.css */
 .product-reviews-section {
   background-color: #fdf6f7;
-  padding: 15px 5%;
+  padding: 50px 0;
   overflow-x: hidden;
 }
 
@@ -11,39 +11,68 @@
   font-size: 3rem;
   font-weight: 500;
   color: var(--color-deep-mauve);
-  margin: 0 auto 15px auto;
+  margin: 0 auto 30px auto;
 }
 
+.carousel-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 50px;
+}
 
+/* --- CRITICAL CHANGE HERE --- */
+/* This targets the container div created by react-slick */
+.slick-slide {
+  height: auto !important; /* Allow content to dictate height */
+  display: flex !important; /* Make it a flex container */
+  flex-direction: column !important; /* Arrange its children vertically */
+}
+
+/* This targets our custom wrapper div inside the slick-slide */
 .review-slide {
   padding: 0 15px;
   box-sizing: border-box;
+  width: 100%;
+  display: flex; /* It's also a flex container */
+  flex-direction: column;
+  flex-grow: 1; /* THIS IS THE KEY: tells this div to grow and fill the parent slide */
 }
+/* --- END OF CHANGE --- */
 
-/* Slick arrows custom styling */
+
+/* --- Slick Carousel Custom Styling --- */
 .slick-prev,
 .slick-next {
   z-index: 2;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .slick-prev:before,
 .slick-next:before {
+  font-family: 'slick';
+  font-size: 30px;
   color: var(--color-deep-mauve);
-  font-size: 28px;
-  opacity: 0.8;
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.slick-prev:hover:before,
+.slick-next:hover:before {
+  opacity: 1;
 }
 
 .slick-prev {
-  left: -50px;
+  left: 0px;
 }
 
 .slick-next {
-  right: -50px;
+  right: 0px;
 }
 
-/* Slick dots custom styling */
 .slick-dots {
   position: static;
   margin-top: 30px;
@@ -60,37 +89,28 @@
 }
 
 /* --- Mobile Responsive Styles --- */
-@media (max-width: 768px) {
-  .product-reviews-section {
-    padding: 40px 15px; /* Reduce padding */
-  }
-
-  .section-title {
-    font-size: 2rem; /* Make title smaller */
-    margin-bottom: 30px;
-  }
-
-  .review-slide {
-    padding: 0 5px; /* Reduce padding around the single card */
-  }
-
-  /* Reposition arrows to be inside the carousel on mobile */
-  .slick-prev,
-  .slick-next {
-    top: 50%;
-  }
-
-  .slick-prev {
-    left: 5px; /* Bring inside from the left */
-  }
-
-  .slick-next {
-    right: 5px; /* Bring inside from the right */
+@media (max-width: 992px) {
+  .carousel-wrapper {
+    padding: 0 40px;
   }
 }
-.carousel-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative; /* Keeps arrows positioned correctly */
-  overflow: hidden;  /* This is the key to clipping the arrows */
+
+@media (max-width: 768px) {
+  .product-reviews-section {
+    padding: 40px 0;
+  }
+  .section-title {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
+  .carousel-wrapper {
+    padding: 0 15px;
+  }
+  .review-slide {
+    padding: 0 5px;
+  }
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
 }

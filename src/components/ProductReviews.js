@@ -73,7 +73,6 @@ const ProductReviews = () => {
           (review) => review.status === "approved"
         );
 
-        // Create a card for each approved review for a product
         return approvedReviews.map((review) => ({
           id: `${product.id}-${review.id}`,
           author: review.firstName || review.author || review.name || review.user || "Valued Customer",
@@ -93,85 +92,50 @@ const ProductReviews = () => {
     return null;
   }
 
- const settings = {
-  dots: true,
-  infinite: reviews.length > 3,
-  speed: 600,
-  slidesToShow: 3,
-  slidesToScroll: 3,
-  arrows: true,
-
-  // Added autoplay settings
-  autoplay: true,           
-  autoplaySpeed: 2000,      
-
-  responsive: [
-    {
-      breakpoint: 992,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
-        infinite: reviews.length > 2,
+  const settings = {
+    dots: true,
+    infinite: reviews.length > 3,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1, // Scroll one at a time for a smoother experience
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true, // Pause slider when mouse is over it
+    responsive: [
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: reviews.length > 2,
+        },
       },
-    },
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        infinite: reviews.length > 1,
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: reviews.length > 1,
+        },
       },
-    },
-  ],
-};
+    ],
+  };
 
-return (
-  <section className="product-reviews-section">
-    <h2 className="section-title">Words from Our Customers</h2>
-    <div className="carousel-wrapper">
-      <Slider {...settings} className="reviews-carousel">
-        {reviews.map((review) => (
-          <div key={review.id} className="review-slide">
-            <ReviewCard review={review} />
-          </div>
-        ))}
-      </Slider>
-    </div>
-  </section>
-);
+  return (
+    <section className="product-reviews-section">
+      <h2 className="section-title">Words from Our Customers</h2>
+      <div className="carousel-wrapper">
+        <Slider {...settings} className="reviews-carousel">
+          {reviews.map((review) => (
+            <div key={review.id} className="review-slide">
+              <ReviewCard review={review} />
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </section>
+  );
 };
 
 export default ProductReviews;
-
-
-// import React from 'react';
-// import ReviewCard from './ReviewCard';
-// import './ProductReviews.css';
-
-// // We now only import the single image you've added
-// import productImage from '../assets/images/product-1.jpg';
-
-// // Updated mock data to use the same image for every review
-// const mockReviews = [
-//   { id: 1, author: 'Sienna M.', rating: 5, reviewText: 'The fit is absolutely perfect, and the fabric feels incredibly luxurious. A new staple in my wardrobe!', productTitle: 'Earthy Green Waistcoat', productImage: productImage },
-//   { id: 2, author: 'Chloe T.', rating: 5, reviewText: 'Effortlessly chic. I received so many compliments the first time I wore this out.', productTitle: 'Rust Mirage Co-ord Set', productImage: productImage },
-//   { id: 3, author: 'Amelia R.', rating: 4, reviewText: 'Beautiful design and very comfortable. The attention to detail is amazing.', productTitle: 'Sunbaked Jungle Co-ord', productImage: productImage },
-//   { id: 4, author: 'Isabella G.', rating: 5, reviewText: 'This dress is a dream! The timeless pattern and flowy fabric are simply stunning.', productTitle: 'Indigo Garden Dress', productImage: productImage },
-//   { id: 5, author: 'Olivia P.', rating: 5, reviewText: 'Sustainable and stylish. It’s rare to find a brand that does both so well. Highly recommend!', productTitle: 'Earthy Green Waistcoat', productImage: productImage },
-//   { id: 6, author: 'Sophia L.', rating: 4, reviewText: 'I love the versatility. It can be dressed up for an evening out or worn casually.', productTitle: 'Rust Mirage Co-ord Set', productImage: productImage },
-// ];
-
-// const ProductReviews = () => {
-//   return (
-//     <section className="product-reviews-section">
-//       <h2 className="section-title">Words from Our Customers</h2>
-//       <div className="reviews-grid">
-//         {mockReviews.map((review) => (
-//           <ReviewCard key={review.id} review={review} />
-//         ))}
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default ProductReviews;

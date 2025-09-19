@@ -10,7 +10,7 @@ const ReviewCard = ({ review }) => {
         <div className="review-card-front">
           <p className="review-rating">{"⭐".repeat(review.rating)}</p>
           <p className="review-text">"{review.reviewText}"</p>
-          <div>
+          <div className="review-author-info">
             <p className="review-author">- {review.author}</p>
             <p className="review-product">on {review.productTitle}</p>
           </div>

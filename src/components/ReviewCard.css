@@ -1,16 +1,23 @@
 /* src/components/ReviewCard.css */
 .review-card {
   perspective: 1000px;
-  /* Set a min-height here to ensure the container has height for the inner elements */
   min-height: 260px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* THIS IS THE KEY: tells the card to grow and fill the .review-slide */
+  flex-grow: 1; 
 }
 
 .review-card-inner {
   position: relative;
   width: 100%;
-  height: 100%;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  /* This also needs to grow to fill the parent .review-card */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .review-card:hover .review-card-inner {
@@ -20,30 +27,30 @@
 .review-card-front,
 .review-card-back {
   width: 100%;
-  height: 100%;
   border-radius: 12px;
   backface-visibility: hidden;
   box-sizing: border-box;
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
 }
 
 .review-card-front {
-  /* This element is in the normal document flow and gives the component its height */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 20px;
+  padding: 25px;
   text-align: center;
-  min-height: 260px;
+  /* Make sure the front of the card takes all available space */
+  flex-grow: 1;
 }
 
 .review-card-back {
-  /* This element is positioned on top of the front face */
   position: absolute;
   top: 0;
   left: 0;
+  height: 100%; /* Back face must cover the whole area */
   transform: rotateY(180deg);
   overflow: hidden;
   display: flex;
@@ -51,13 +58,24 @@
   align-items: center;
 }
 
+.review-card:hover .review-card-front,
+.review-card:hover .review-card-back {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
 .review-text {
   font-style: italic;
   color: #333;
-  margin: 12px 0;
-  flex-grow: 1; /* Allows this to take up available space */
+  margin: 15px 0;
+  flex-grow: 1;
   display: flex;
   align-items: center;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.review-author-info {
+  /* Wrapper for author and product text */
 }
 
 .review-author {
