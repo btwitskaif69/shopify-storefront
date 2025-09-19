@@ -50,13 +50,13 @@ const TopProducts = () => {
 
   // --- SLIDER SETTINGS OBJECT REMOVED ---
 
-  if (loading) return <p style={{textAlign: 'center', padding: '50px'}}>Loading Our Curated Collection...</p>;
+  if (loading) return <p style={{textAlign: 'center', padding: '50px'}}>Loading Shop By Category...</p>;
   if (error) return <p style={{textAlign: 'center', padding: '50px'}}>Error loading products: {error.message}</p>;
 
   if (!data || !data.collection || data.collection.products.edges.length === 0) {
     return (
       <div className="top-products-section">
-        <h2 className="section-title">Our Curated Collection</h2>
+        <h2 className="section-title">Shop By Category</h2>
         <p>The "top-products" collection could not be found or is empty.</p>
       </div>
     );
@@ -66,7 +66,7 @@ const TopProducts = () => {
 
   return (
     <div className="top-products-section">
-      <h2 className="section-title">{'Our Curated Collection'}</h2>
+      <h2 className="section-title">{'Shop By Category'}</h2>
       
       {/* ✅ KEY CHANGE: Replaced Slider with a div for the grid */}
       <div className="product-grid">

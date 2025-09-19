@@ -1,7 +1,6 @@
 .preloader-container {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -19,42 +18,55 @@
   display: block;
 }
 
-.preloader-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.4);
-}
+/* --- cursor-following text --- */
+.cursor-hint {
+  position: fixed;                 /* follows viewport */
+  z-index: 10000;
+  transform: translate(14px, 14px);/* offset from pointer */
+  pointer-events: none;            /* don't block clicks */
+  user-select: none;
 
-.preloader-hint {
-  color: #fff;
-  font-size: 1.5rem;
+  font-family: var(--font-primary, system-ui, -apple-system, Segoe UI, Roboto);
+  font-size: 0.95rem;
   font-weight: 700;
-  font-family: var(--font-primary);
-  margin-top: 1px;
+  color: #fff;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  background: transparent;         /* ✅ no background */
+  border: 1.5px solid rgba(255,255,255,0.9); /* ✅ outline */
+  /* backdrop-filter removed since bg is transparent */
+  white-space: nowrap;
 }
 
+/* hide hint on touch devices (no cursor) */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-hint { display: none; }
+}
+
+/* --- transparent Skip button --- */
 .skip-button {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: #642c44;
-  border: none;
+  background: transparent;        /* transparent background ✅ */
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.7);
   padding: 8px 14px;
   font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 4px;
+  border-radius: 999px;
   cursor: pointer;
-  z-index: 3;
-  transition: background 0.2s ease-in-out;
+  z-index: 10001;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
 }
 
 .skip-button:hover {
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.95);
+}
+
+.skip-button:active {
+  transform: scale(0.98);
 }

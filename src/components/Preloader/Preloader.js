@@ -1,33 +1,36 @@
-import React, { useRef, useState } from 'react';
-import './Preloader.css';
+import React, { useRef, useState } from "react";
+import "./Preloader.css";
 
-const Preloader = ({ onVideoEnd }) => {
+const Preloader = ({ onVideoEnd, hintText = "Click To Start" }) => {
   const videoRef = useRef(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const handleScreenClick = () => {
     if (videoRef.current && !hasStarted) {
-      videoRef.current.play()
-        .then(() => {
-          setHasStarted(true);
-          console.log("Preloader video started");
-        })
-        .catch(err => {
-          console.error("Error playing preloader video:", err);
-        });
+      videoRef.current
+        .play()
+        .then(() => setHasStarted(true))
+        .catch((err) => console.error("Preloader play error:", err));
     }
+  };
+
+  const handleMouseMove = (e) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
   };
 
   const handleSkip = (e) => {
-    e.stopPropagation(); // prevent play on skip click
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-    onVideoEnd(); // end preloader
+    e.stopPropagation();
+    if (videoRef.current) videoRef.current.pause();
+    onVideoEnd && onVideoEnd();
   };
 
   return (
-    <div className="preloader-container" onClick={handleScreenClick}>
+    <div
+      className="preloader-container"
+      onClick={handleScreenClick}
+      onMouseMove={handleMouseMove}
+    >
       <video
         ref={videoRef}
         src="/videos/intro_viddd.mp4"
@@ -37,14 +40,20 @@ const Preloader = ({ onVideoEnd }) => {
         onEnded={onVideoEnd}
         className="preloader-video"
       />
+
+      {/* Cursor-following hint (hidden after the video starts) */}
       {!hasStarted && (
-        <div className="preloader-overlay">
-          <p className="preloader-hint">Click to Start</p>
+        <div
+          className="cursor-hint"
+          style={{ left: mousePos.x, top: mousePos.y }}
+        >
+          <span className="hint-text">{hintText}</span>
         </div>
       )}
+
       {hasStarted && (
         <button className="skip-button" onClick={handleSkip}>
-          Skip Video
+          Skip
         </button>
       )}
     </div>
