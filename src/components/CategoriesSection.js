@@ -15,13 +15,13 @@ const baseCategories = [
   { title: "Trousers", handle: "trousers", image: "/images/categories4.png" },
 ];
 
-const categories = [...baseCategories, ...baseCategories]; 
+const categories = [...baseCategories, ...baseCategories];
 
 const CategoriesSection = () => {
   return (
     <section className="categories-section">
-      <h2 className="categories-title">Change Into The Delan Edit</h2>
-      <p className="categories-subtitle"> Discover Your Signature Look</p>
+      <h2 className="categories-title">Discover Your Signature Look</h2>
+
       <Swiper
         modules={[Navigation]}
         speed={600}
@@ -30,32 +30,33 @@ const CategoriesSection = () => {
         loop={true}
         navigation
         className="categories-carousel"
-        // ✅ Set slidesPerView directly and update breakpoints
-        slidesPerView={3} 
+        slidesPerView={3}
         spaceBetween={30}
         breakpoints={{
-          320: {
-            slidesPerView: 1,
-            spaceBetween: 15,
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 30,
-          },
+          320:  { slidesPerView: 1, spaceBetween: 15 },
+          768:  { slidesPerView: 2, spaceBetween: 20 },
+          1024: { slidesPerView: 3, spaceBetween: 30 },
         }}
       >
         {categories.map((cat, index) => (
           <SwiperSlide key={`${cat.handle}-${index}`} className="category-slide">
-            <Link to={`/collections/${cat.handle}`} className="category-card">
+            <Link to={`/collections/${cat.handle}`} className="category-card" aria-label={cat.title}>
               <img src={cat.image} alt={cat.title} className="category-img" />
             </Link>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* ✅ Bottom CTA button */}
+      <div className="categories-cta">
+        <Link
+          to="/collections/dresses"
+          className="categories-btn"
+          aria-label="View all dresses"
+        >
+          VIEW ALL
+        </Link>
+      </div>
     </section>
   );
 };

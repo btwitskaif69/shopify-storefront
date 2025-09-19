@@ -1,8 +1,44 @@
-/* src/components/StatsCounter.css */
+/* src/components/StatsCounter.css
+   Uses Montserrat (your secondary font) & site tokens for a cohesive look.
+*/
 
+/* Wrapper keeps a seamless background from intro through stats */
+.stats-wrapper {
+  background-color: #fdf5f5; /* matches stats-section */
+}
+
+/* ---------- Intro (H1 + paragraph) ---------- */
+.stats-intro {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 1rem 0; /* top spacing; remove bottom so it butts up to stats-section padding */
+  text-align: center;
+  color: var(--color-deep-mauve, #642c44);
+}
+
+.stats-heading {
+  margin: 0 0 0.75rem 0;
+  color: var(--color-deep-mauve, #642c44);
+  font-family: var(--font-primary, 'Cormorant Garamond'), serif; /* same title vibe as site */
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem);
+  letter-spacing: 0.02em;
+}
+
+.stats-subtitle {
+  margin: 0 auto;
+  max-width: 68ch;
+  color: #555; /* subtle body tone */
+  font-family: var(--font-secondary, 'Montserrat'), sans-serif;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* ---------- Stats area ---------- */
 .stats-section {
   background-color: #fdf5f5;
-  padding: 5rem 1rem;
+  padding: 3rem 1rem 5rem; /* a bit less top since intro provides spacing */
   text-align: center;
 }
 
@@ -39,26 +75,48 @@
   background-color: rgba(100, 44, 68, 0.2);
 }
 
+/* =========================
+   Numbers
+   ========================= */
+/* Guard against global heading rules that might force bold weights */
+.stats-section h1.stat-number,
+.stats-section h2.stat-number,
+.stats-section h3.stat-number,
+.stats-section .stat-number {
+  font-family: var(--font-secondary, 'Montserrat'), sans-serif; /* Montserrat */
+  font-weight: 500; /* change to 400 for regular */
+}
+
+/* Size, color, spacing */
 .stat-number {
   color: #642c44;
-  font-family: 'Poppins', sans-serif;
-  /* ✅ INCREASED SIZE */
   font-size: 4.5rem; /* 72px */
-  font-weight: 700;
   margin: 0;
 }
 
+/* =========================
+   Label
+   ========================= */
 .stat-label {
   color: #888;
   margin-top: 0.75rem;
   font-size: 1rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-secondary, 'Montserrat'), sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-weight: 500; /* medium pairs nicely with the number */
 }
 
 /* --- Responsive Styling --- */
 @media (max-width: 768px) {
+  .stats-intro {
+    padding: 2rem 1rem 0;
+  }
+
+  .stats-section {
+    padding: 2.5rem 1rem 3.5rem;
+  }
+
   .stats-container {
     flex-direction: column;
     gap: 2rem;
@@ -67,14 +125,13 @@
   .stat-item:not(:last-child)::after {
     display: none;
   }
-  
+
   .stat-item:not(:last-child) {
-      border-bottom: 1px solid rgba(100, 44, 68, 0.1);
-      padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(100, 44, 68, 0.1);
+    padding-bottom: 2rem;
   }
 
   .stat-number {
-    /* ✅ INCREASED SIZE FOR MOBILE */
     font-size: 3.5rem; /* 56px */
   }
 }

@@ -1,5 +1,10 @@
 /* TopProducts.css */
 
+/* ---------- Brand token ---------- */
+:root {
+  --brand-642: #642c44;
+}
+
 /* ---------- Section ---------- */
 .top-products-section {
   padding: 40px 5%;
@@ -11,8 +16,8 @@
   font-family: var(--font-primary);
   font-size: 3rem;
   font-weight: 600;
-  margin-bottom: 50px;
-  color: var(--color-deep-mauve);
+  margin-bottom: 30px !important;
+  color: var(--brand-642);
 }
 
 /* ---------- Grid (4 cols desktop) ---------- */
@@ -30,14 +35,23 @@
 
 .product-card {
   text-decoration: none;
-  color: var(--color-deep-mauve);
-  display: block; /* link fills wrapper */
+  color: var(--brand-642);    /* text color uses brand */
+  display: block;             /* link fills wrapper */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left; /* ensure details align left */
+  text-align: left;           /* ensure details align left */
+  outline: none;
 }
 
 .product-card:hover {
   transform: translateY(-10px);
+}
+
+/* Focus ring in brand color */
+.product-card:focus-visible,
+.add-to-cart-btn:focus-visible,
+.view-all-button:focus-visible {
+  outline: 2px solid var(--brand-642);
+  outline-offset: 2px;
 }
 
 /* ---------- Image ---------- */
@@ -81,37 +95,85 @@
   opacity: 1;
 }
 
-/* ---------- Details (default) ---------- */
+/* ---------- Details ---------- */
 .product-info {
-  padding: 0 5px;
+  padding: 0 5px 10px;
   display: flex;
   flex-direction: column;   /* stack */
   align-items: flex-start;  /* left align */
-  gap: 4px;                 /* compact spacing */
+  gap: 6px;                 /* a bit more room before actions */
 }
 
+/* ✅ Clamp title to exactly 1 line with ellipsis and reserve consistent height */
 .product-title {
+  display: block;                    /* behaves predictably in flex/grid */
   font-family: var(--font-secondary);
   font-size: 1.1rem;
   font-weight: 600;
-  margin: 0 0 4px 0;
   line-height: 1.35;
-  color: var(--color-deep-mauve); /* fixed var() syntax */
+  color: var(--brand-642);
+  margin: 0 0 4px 0;
+
+  /* 1-line clamp + ellipsis */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  /* Keep card heights consistent regardless of text length/rendering */
+  height: calc(1em * 1.35);          /* exact one “line-height” tall */
+  max-width: 100%;
+  min-width: 0;                      /* lets ellipsis work inside flex/grid */
 }
 
 .product-price {
   font-family: var(--font-secondary);
   font-size: 0.95rem;
-  font-weight: 400; /* lighter like your reference */
-  margin: 0 0 4px 0;
-  color: #000;
+  font-weight: 400;
+  margin: 0 0 2px 0;
+  color: var(--brand-642);  /* brand text */
 }
 
 .star-rating {
-  color: #f5a623;
+  color: #f5a623; /* keep stars gold */
   font-size: 0.95rem;
   letter-spacing: 0.25px;
   margin: 0;
+}
+
+/* ---------- Actions ---------- */
+.product-actions {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.add-to-cart-btn {
+  appearance: none;
+  border: 2px solid var(--brand-642);   /* brand border */
+  background: var(--brand-642);         /* brand background */
+  color: var(--color-white);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color .2s ease, color .2s ease, transform .08s ease, opacity .2s ease, box-shadow .2s ease;
+}
+
+.add-to-cart-btn:hover {
+  background: transparent;              /* transparent bg on hover */
+  color: var(--brand-642);              /* brand text */
+  transform: translateY(-1px);
+}
+
+.add-to-cart-btn:active {
+  transform: translateY(0);
+}
+
+.add-to-cart-btn[disabled],
+.add-to-cart-btn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* ---------- View All Button ---------- */
@@ -125,14 +187,14 @@
   text-transform: uppercase;
   text-decoration: none;
   background-color: transparent;
-  color: var(--color-deep-mauve);
-  border: 2px solid var(--color-deep-mauve);
+  color: var(--brand-642);               /* brand text */
+  border: 2px solid var(--brand-642);    /* brand border */
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .view-all-button:hover {
-  background-color: var(--color-deep-mauve);
+  background-color: var(--brand-642);    /* brand background */
   color: var(--color-white);
 }
 
@@ -153,20 +215,20 @@
 }
 
 /* =========================================================
-   HARD OVERRIDES — ensure Name → Price → Rating, each full row
-   (useful if other global CSS tries to lay out side-by-side)
+   HARD OVERRIDES — ensure Name → Price → Rating → Actions
    ========================================================= */
-.product-card .product-info{
+.product-card .product-info {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
   justify-content: flex-start !important;
-  gap: 4px !important;
+  gap: 6px !important;
 }
 
 .product-card .product-title,
 .product-card .product-price,
-.product-card .star-rating{
+.product-card .star-rating,
+.product-card .product-actions {
   display: block !important;
   width: 100% !important;
   max-width: 100% !important;
@@ -175,12 +237,13 @@
   clear: both !important;
 }
 
-.product-card .product-title{ order: 1 !important; }
-.product-card .product-price{ order: 2 !important; }
-.product-card .star-rating{  order: 3 !important; }
+.product-card .product-title { order: 1 !important; }
+.product-card .product-price { order: 2 !important; }
+.product-card .star-rating {  order: 3 !important; }
+.product-card .product-actions { order: 4 !important; }
 
 /* guard against any stray grid styles */
-.product-card .product-info{
+.product-card .product-info {
   grid-auto-flow: unset !important;
   grid-template-columns: unset !important;
 }

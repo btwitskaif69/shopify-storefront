@@ -69,7 +69,7 @@ const InteractiveModelSection = ({ nextSectionRef }) => {
         
         <div className="interactive-heading">
           <h2>Why Delan Feels Like You:</h2>
-          <p>Because fashion should vibe with your story.</p>
+          <p id='subheading'>Because fashion should vibe with your story.</p>
         </div>
 
         <Canvas

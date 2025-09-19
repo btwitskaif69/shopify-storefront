@@ -98,7 +98,7 @@ export default function Header() {
 
           <div className="logo-container">
             <Link to="/" className="logo-link">
-              <img src="/images/delan-logo.png" alt="DELAN brand logo" className="logo-image" />
+              <img src="/images/Delan-logo.svg" alt="DELAN brand logo" className="logo-image" />
             </Link>
           </div>
 

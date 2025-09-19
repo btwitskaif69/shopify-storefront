@@ -53,9 +53,18 @@
 }
 
 .logo-image {
-  height: 45px;
+  height: 60px;
+  width: auto;          /* avoid odd scaling */
   max-width: 100%;
-  object-fit: contain;
+  object-fit: contain;    /* remove inline-image baseline gaps */
+
+  /* Text inside the SVG (when rasterized by some browsers) */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Helps Chrome/Safari treat vector edges more crisply */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimizeQuality;
 }
 
 .header-link,

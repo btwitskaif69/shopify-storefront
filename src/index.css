@@ -27,3 +27,12 @@ body {
   background-color: var(--color-white); /* Clean, high-end appeal */
   color: var(--color-deep-mauve);
 }
+
+#subheading {
+  font-family: var(--font-secondary), -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+               "Helvetica Neue", sans-serif;
+  font-weight: 500;              /* tweak as you like */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
