@@ -34,6 +34,14 @@
   background-attachment: fixed;
 }
 
+/* InteractiveModelSection.css */
+.interactive-section,
+.sticky-container {
+  touch-action: pan-y;           /* allow vertical scroll gestures */
+  -ms-touch-action: pan-y;       /* legacy */
+}
+
+
 .sticky-container {
   position: sticky;
   top: 0;

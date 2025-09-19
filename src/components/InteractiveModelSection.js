@@ -72,10 +72,20 @@ const InteractiveModelSection = ({ nextSectionRef }) => {
           <p>Because fashion should vibe with your story.</p>
         </div>
 
-        <Canvas camera={{ position: cameraPosition, fov: 50 }}> {/* ✅ Use dynamic camera position */}
+        <Canvas
+          camera={{ position: cameraPosition, fov: 50 }}
+          style={{
+            width: '100%',
+            height: '100%',
+            // Let mobile scrolling pass through the canvas
+            pointerEvents: isMobile ? 'none' : 'auto',
+            touchAction: isMobile ? 'pan-y' : 'auto',
+          }}
+        >
           <ambientLight intensity={1.5} />
           <directionalLight position={[10, 10, 5]} intensity={2} />
           <Model modelRotation={modelRotation} />
+          {/* Controls are disabled anyway; feel free to remove entirely */}
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
 
