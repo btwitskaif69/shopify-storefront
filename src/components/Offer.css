@@ -92,6 +92,17 @@
   letter-spacing: .02em;
 }
 
+.center-message {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.offer-message {
+  font-size: 1rem;
+  margin-top: 12px;
+  color: #555;
+}
+
 /* Info */
 .offer-info {
   padding: 12px 14px 16px;

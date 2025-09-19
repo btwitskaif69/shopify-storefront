@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 import "./Offer.css";
 
-/* 
-   Environment: works like TopProducts
-   Make sure .env has:
-   REACT_APP_SHOPIFY_STOREFRONT_TOKEN=your_token
-   REACT_APP_SHOPIFY_API_ENDPOINT=https://your-shop.myshopify.com/api/2025-07/graphql.json
+/*
+  Ensure .env contains (CRA):
+  REACT_APP_SHOPIFY_STOREFRONT_TOKEN=your_token
+  REACT_APP_SHOPIFY_API_ENDPOINT=https://your-shop.myshopify.com/api/2025-07/graphql.json
 */
+
 const GET_OFFERS = gql`
   query getOfferProducts($first: Int!) {
     products(first: $first, sortKey: BEST_SELLING) {
@@ -27,14 +27,8 @@ const GET_OFFERS = gql`
               node {
                 id
                 title
-                price {
-                  amount
-                  currencyCode
-                }
-                compareAtPrice {
-                  amount
-                  currencyCode
-                }
+                price { amount currencyCode }
+                compareAtPrice { amount currencyCode }
               }
             }
           }
@@ -44,12 +38,12 @@ const GET_OFFERS = gql`
   }
 `;
 
-function bestDiscountVariant(variants) {
+function bestDiscountVariant(variants = []) {
   let best = null;
   let bestPct = 0;
-  for (const { node: v } of variants || []) {
-    const price = Number(v.price?.amount ?? 0);
-    const cmp = Number(v.compareAtPrice?.amount ?? 0);
+  for (const { node: v } of variants) {
+    const price = Number(v?.price?.amount ?? 0);
+    const cmp = Number(v?.compareAtPrice?.amount ?? 0);
     if (cmp > price && price > 0) {
       const pct = ((cmp - price) / cmp) * 100;
       if (pct > bestPct) {
@@ -72,7 +66,7 @@ function formatMoney(amount, code) {
 }
 
 const Offer = () => {
-  // exactly like TopProducts but query offers
+  // Same pattern as your TopProducts; token & endpoint via CRA env
   const { loading, error, data } = useQuery(GET_OFFERS, {
     variables: { first: 24 },
     context: {
@@ -84,55 +78,64 @@ const Offer = () => {
     },
   });
 
-  if (loading)
+  // Derive products AFTER data is available
+  const products = useMemo(() => {
+    const nodes = (data?.products?.edges || []).map((e) => e.node);
+    const withOffers = nodes
+      .map((p) => {
+        const best = bestDiscountVariant(p.variants?.edges || []);
+        return best
+          ? {
+              ...p,
+              bestVariant: best,
+              to: `/products/${p.handle}`,
+            }
+          : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.bestVariant.discountPct - a.bestVariant.discountPct);
+    return withOffers;
+  }, [data]);
+
+  if (loading) {
     return (
-      <p style={{ textAlign: "center", padding: "50px" }}>
-        Loading Today’s Offers…
-      </p>
+      <div className="offer-section center-message">
+        <h2 className="offer-title">🔥 Hot Deals of the Day 🔥</h2>
+        <p className="offer-message">Finding the best discounts for you…</p>
+      </div>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
-      <p style={{ textAlign: "center", padding: "50px" }}>
-        Error loading offers: {error.message}
-      </p>
+      <div className="offer-section center-message">
+        <h2 className="offer-title">🔥 Hot Deals of the Day 🔥</h2>
+        <p className="offer-message">Error loading offers: {error.message}</p>
+      </div>
     );
+  }
 
-  const products = (data?.products?.edges || [])
-    .map((e) => e.node)
-    .map((p) => {
-      const best = bestDiscountVariant(p.variants?.edges);
-      return best
-        ? {
-            ...p,
-            bestVariant: best,
-          }
-        : null;
-    })
-    .filter(Boolean)
-    .sort((a, b) => b.bestVariant.discountPct - a.bestVariant.discountPct);
-
-  if (products.length === 0) {
+  if (!products || products.length === 0) {
     return (
-      <div className="offer-section">
-        <h2 className="offer-title">Today’s Offers</h2>
-        <p>No discounted products found at the moment.</p>
+      <div className="offer-section center-message">
+        <h2 className="offer-title">🔥 Hot Deals of the Day 🔥</h2>
+        <p className="offer-message">No discounted products right now.</p>
       </div>
     );
   }
 
   return (
     <div className="offer-section">
-      <h2 className="offer-title">Today’s Offers</h2>
+      <div className="offer-header">
+        <h2 className="offer-title">🔥 Hot Deals of the Day 🔥</h2>
+        <p className="offer-sub">Best deals live right now</p>
+      </div>
+
       <div className="offer-grid">
         {products.map((p) => {
           const v = p.bestVariant;
           return (
-            <Link
-              to={`/products/${p.handle}`}
-              key={p.id}
-              className="offer-card"
-            >
+            <Link to={p.to} key={p.id} className="offer-card">
               <div className="offer-img">
                 <img
                   src={p.featuredImage?.url}
@@ -153,6 +156,9 @@ const Offer = () => {
                     )}
                   </span>
                 </div>
+                {v.title && v.title !== "Default Title" ? (
+                  <div className="variant-note">{v.title}</div>
+                ) : null}
               </div>
             </Link>
           );
